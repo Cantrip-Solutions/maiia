@@ -58,15 +58,7 @@
                             @endif
                         </div>
 
-                        <div class="form-group">
-                            <label for="company_phone" class="control-label">Contact Number *:</label>
-                            {!! Form::text('phone', '',array('placeholder'=>'0123456789', 'class'=>'form-control')) !!}
-                            @if ($errors->has('phone'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('phone') }}</strong>
-                                </span>
-                            @endif
-                        </div>
+                        
 
                         <div class="form-group">
                             <label for="company_address1" class="control-label">Address Line 1 *:</label>
@@ -92,7 +84,7 @@
                             <label for="company_country" class="control-label">Country *:</label>
                             <select class='form-control country' name="country">
                                 @foreach($countries as $country)
-                                <option value="{{$country->id}}">{{$country->name}}</option>
+                                <option value="{{$country->id}}" ccode="{{$country->phonecode}}">{{$country->name}}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('country'))
@@ -101,6 +93,7 @@
                                 </span>
                             @endif
                         </div>
+
 
                         <div class="form-group">
                             <label for="company_State" class="control-label">State *:</label>
@@ -124,7 +117,18 @@
                             @endif
                         </div>
 
-                        
+                        <div class="form-group">
+                            <label for="company_phone" class="control-label">Contact Number *:</label>
+                            <div class="input-group m-b">
+                            <span class="input-group-addon country_code">$</span>
+                            {!! Form::text('phone', '',array('placeholder'=>'0123456789', 'class'=>'form-control')) !!}
+                            </div>
+                            @if ($errors->has('phone'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('phone') }}</strong>
+                                </span>
+                            @endif
+                        </div>
 
                         <div class="form-group">
                             <label for="company_postal_code" class="control-label">Pin Code *:</label>
@@ -182,6 +186,7 @@ $('.country').on('change',function () {
         'success':function(resp){
             $('.state').children('option').empty().remove();
             $('.city').children('option').empty().remove();
+            $('.country_code').text()
             $.each(resp,function(intex,info){
               $('<option value="'+ info.id +'">'+ info.name +'</option>').appendTo('.state');
             });

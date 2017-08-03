@@ -17,6 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->increments('id');
             $table->integer('parent_cat_id')->default(0);
             $table->char('cat_name', 255);
+            $table->string('cat_icon',255);
             $table->text('cat_description')->nullable();
             $table->timestamps();
         });

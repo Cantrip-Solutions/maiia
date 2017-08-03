@@ -19,6 +19,7 @@ class CreateMenusTable extends Migration
             $table->char('menu_name', 255);
             $table->char('menu_page', 255);
             $table->char('icon', 255);
+            $table->enum('fixed', ['0','1'])->default('0');
             $table->enum('admin_access', ['YES','NO'])->default('YES');
             $table->enum('vendor_access', ['YES','NO'])->default('NO');
             $table->enum('buyer_access', ['YES','NO'])->default('NO');

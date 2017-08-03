@@ -12,6 +12,7 @@ use File;
 use Illuminate\Support\Facades\Input;
 use Mail;
 use Session;
+use Image;
 
 
 class CategoryController extends Controller
@@ -34,7 +35,7 @@ class CategoryController extends Controller
         foreach ($categories as $key => $value) {
 
             if($value->parent_cat_id == $parent_cat_id ) {
-                $formated_category_array[ $value->id ]=array('name'=> $value->cat_name);
+                $formated_category_array[ $value->id ]=array('name'=> $value->cat_name,'child'=>0);
             }elseif( array_key_exists($value->parent_cat_id, $formated_category_array)){
 
                 $formated_category_array[ $value->parent_cat_id ]['child']=1;
@@ -57,30 +58,46 @@ class CategoryController extends Controller
 		$cat_description = $req->cat_description;
 		$rules = array(
 			// 'file' => 'required|mimes:png,gif,jpeg,jpg',
-			'cat_name'    => 'required',
-			'cat_description'   => 'required',
+			'cat_name'    => 'required'
         );
         $validator = Validator::make(array(
 			'cat_name'  => $cat_name,
-			'cat_description' => $cat_description
             ), $rules);
         if ($validator->fails()) {
             return back()
                 ->withErrors($validator)
                 ->withInput();
         } else{
-        	
+        	if (Input::hasfile('cat_icon')) {
+
+                $image   = Input::file('cat_icon');
+                $filename  = 'CAT'.time().'.png';
+                $target  = config('global.categoryPath');
+                $path = $target.$filename;
+                Image::make($image->getRealPath())->resize(30, 30)->save($path);
+
+
+
         		$ctaegory = new Category;
         		$ctaegory->cat_name = $cat_name;
         		$ctaegory->cat_description = $cat_description;
+                $ctaegory->cat_icon = $filename;
+                if($req->subcategory){
+                    $ctaegory->parent_cat_id=$req->parent_cat_id;
+                }else{
+                    $ctaegory->parent_cat_id=0;
+                }
         		$ctaegory->save();
-
+                
         		$last_insert_id = $ctaegory->id;
         		
 				Session::flash('message', 'Cetagory create successfull.');
-		        return redirect('/tab/category/add');
+		        
+            }else{
+               Session::flash('message', 'Cetagory Not Created . Please insert Category Image.'); 
 
-        	
+            }
+        	return redirect('/tab/category/add');
         }
     }
 
@@ -93,6 +110,85 @@ class CategoryController extends Controller
     }
     
     public function addsubCategory($parent_cat_id){
-        echo $parent_cat_id;
+        $live = array('menu'=>'33','parent'=>'3');
+        $category=Category::where( 'id' , '=' , $parent_cat_id )->first();
+        //echo "<pre>";print_r($category);
+        $subcategory=1;
+        return view('admin.addCategory', compact('live','category','subcategory'));
     }
+
+    public function editCategory($cat_name,$cat_id){
+        $live = array('menu'=>'33','parent'=>'3');
+         $category=Category::where( 'id' , '=' , $cat_id )->first();
+         if($category->parent_cat_id != 0){
+            $subcategory=1;
+            $parentCategory=Category::where( 'id' , '=' , $category->parent_cat_id )->first();
+        }else{
+            $subcategory=0;
+            $parentCategory='';
+        }
+         return view('admin.editCategory', compact('live','category','subcategory','parentCategory'));
+    }
+
+    public function updateCategory(Request $req){
+
+        //echo "edit";
+        $cat_name  = $req->cat_name;
+        $cat_description = $req->cat_description;
+        $cat_id=$req->id;
+        $rules = array(
+            // 'file' => 'required|mimes:png,gif,jpeg,jpg',
+            'cat_name'    => 'required'
+        );
+        $validator = Validator::make(array(
+            'cat_name'  => $cat_name,
+            ), $rules);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        } else{
+
+            if (Input::hasfile('cat_icon')) {
+
+                $image   = Input::file('cat_icon');
+                $filename  = 'CAT'.time().'.png';
+                $target  = config('global.categoryPath');
+                $path = $target.$filename;
+                Image::make($image->getRealPath())->resize(30, 30)->save($path);
+
+            }else{
+                $filename  = $req->old_cat_icon;
+            }
+
+            if($req->subcategory){
+                $parent_cat_id=$req->parent_cat_id;
+            }else{
+                $parent_cat_id=0;
+            }
+
+            Category::where('id', $cat_id)->update([
+                'cat_name' => $cat_name,
+                'cat_icon'=>$filename,
+                'cat_description'=>$cat_description
+            ]);
+            
+            Session::flash('message', 'Cetagory Edited successfull.');
+            return redirect('/tab/category/edit/'.$cat_name.'/'.$cat_id);
+        }
+
+    }
+
+    public function deleteCategory($cat_name,$cat_id){
+
+        $res=Category::where('id','=',$cat_id)->delete();
+        
+        if($res){
+            echo json_encode(array('status'=>1));
+        }else{
+            echo json_encode(array('status'=>0));
+        }
+            
+    }
+
 }

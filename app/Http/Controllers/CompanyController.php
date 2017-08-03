@@ -238,13 +238,13 @@ class CompanyController extends Controller
     }
     public function viewCompany($name, $id)
     {
-    	$uID       = Crypt::decrypt($id);
-		$live      = array('menu'=>'32','parent'=>'2');
-		$countries = DB::table('countries')->get();
-		$user      = User::find($uID);
-		$userInfo  = UserInfo::where('u_id_fk','=',$uID)->first();
-		$states    = DB::table('states')->where('country_id','=',$userInfo->country)->get();
-		$cities    = DB::table('cities')->where('state_id','=',$userInfo->state)->get();
-    	return view('admin.viewCompany', compact('live','countries','user','userInfo','states','cities'));
+		$uID      = Crypt::decrypt($id);
+		$live     = array('menu'=>'32','parent'=>'2');
+		$user     = User::find($uID);
+		$userInfo = UserInfo::where('u_id_fk','=',$uID)->first();
+		$country  = DB::table('countries')->find($userInfo->country);
+		$state    = DB::table('states')->find($userInfo->state);
+		$city     = DB::table('cities')->find($userInfo->city);
+    	return view('admin.viewUser', compact('live','country','user','userInfo','state','city'));
     }
 }
