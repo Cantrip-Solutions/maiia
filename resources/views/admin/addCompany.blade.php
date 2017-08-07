@@ -83,6 +83,7 @@
                         <div class="form-group">
                             <label for="company_country" class="control-label">Country *:</label>
                             <select class='form-control country' name="country">
+                                <option value="">Select Option</option>
                                 @foreach($countries as $country)
                                 <option value="{{$country->id}}" ccode="{{$country->phonecode}}">{{$country->name}}</option>
                                 @endforeach
@@ -120,7 +121,7 @@
                         <div class="form-group">
                             <label for="company_phone" class="control-label">Contact Number *:</label>
                             <div class="input-group m-b">
-                            <span class="input-group-addon country_code">$</span>
+                            <span class="input-group-addon country_code"></span>
                             {!! Form::text('phone', '',array('placeholder'=>'0123456789', 'class'=>'form-control')) !!}
                             </div>
                             @if ($errors->has('phone'))
@@ -175,6 +176,8 @@
 <script type="text/javascript">
 $('.country').on('change',function () {
     var country = $('.country').val();
+    var ccode = $(this).find('option:selected').attr('ccode');
+    $('.country_code').text(ccode);
     var token = $('input[name=_token]').val();
       $.ajax({
         'type':'post',
@@ -186,7 +189,6 @@ $('.country').on('change',function () {
         'success':function(resp){
             $('.state').children('option').empty().remove();
             $('.city').children('option').empty().remove();
-            $('.country_code').text()
             $.each(resp,function(intex,info){
               $('<option value="'+ info.id +'">'+ info.name +'</option>').appendTo('.state');
             });

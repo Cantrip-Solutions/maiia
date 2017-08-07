@@ -22,11 +22,12 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->integer('ammount');
             $table->integer('original_price');
-            $table->integer('saleing_price');
+            $table->integer('saling_price');
             $table->integer('quantity');
             $table->text('description');
             $table->string('image');
             $table->dateTime('expire_on');
+            
             $table->string('tag');
             $table->timestamps();
         });

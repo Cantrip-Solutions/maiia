@@ -97,7 +97,12 @@ class CategoryController extends Controller
                Session::flash('message', 'Cetagory Not Created . Please insert Category Image.'); 
 
             }
-        	return redirect('/tab/category/add');
+            if($req->subcategory){
+                //$parent_category=Category::where('id',$req->parent_cat_id)->first();
+        	    return redirect('/tab/subcategory/add/'.$req->parent_cat_id);
+            }else{
+                return redirect('/tab/category/add');
+            }
         }
     }
 
@@ -179,16 +184,40 @@ class CategoryController extends Controller
 
     }
 
-    public function deleteCategory($cat_name,$cat_id){
 
-        $res=Category::where('id','=',$cat_id)->delete();
-        
+    public function deleteAllCategory($cat_id){
+
+       $res=Category::where('id','=',$cat_id)->delete();
+
+        $category=Category::where('parent_cat_id','=',$cat_id)->get();
+        $categories=$this->formate_category($category,$cat_id);
+        if(!empty($categories)){
+
+            foreach ($categories as $key => $category) {
+
+                $result=$this->deleteAllCategory($key);
+            }
+
+        }
+
         if($res){
+            return 1;
+        }else{
+            return 0;
+        }
+
+    }
+
+    public function deleteCategory(){
+
+        $data=input::all();
+        $result=$this->deleteAllCategory($data['cat_id']);
+        //echo $result;die;
+        if($result == 1){
             echo json_encode(array('status'=>1));
         }else{
             echo json_encode(array('status'=>0));
-        }
-            
+        }     
     }
 
 }

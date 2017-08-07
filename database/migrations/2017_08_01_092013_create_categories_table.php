@@ -21,6 +21,16 @@ class CreateCategoriesTable extends Migration
             $table->text('cat_description')->nullable();
             $table->timestamps();
         });
+
+        DB::table('categories')->insert([
+                'id' => '1',
+                'parent_cat_id' => 0,
+                'cat_name' => 'UnCategorized',
+                'cat_icon' => 'pe-7s-menu',
+                'cat_description' => 'The Uncategorized Item will be here'
+            ]
+        );
+
     }
 
     /**

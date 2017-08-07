@@ -22,7 +22,6 @@
         <div class="col-lg-12">
 
             <div class="hpanel">
-
                 <div class="panel-body">               
                     @if (Session::has('message'))
                        <div class="alert alert-info"><i class="pe-7s-gleam"></i>{{ Session::get('message') }}</div>
@@ -93,7 +92,7 @@
     </div>
 </div>
 @push('css')
-<link rel="stylesheet" href="admintheme/styles/static_custom.css">
+{!!HTML::style('admintheme/styles/static_custom.css')!!}
 @endpush
 @push('scripts')
 {!! HTML::script('plugins/jquery-validation-1.15.0/dist/jquery.validate.min.js') !!}

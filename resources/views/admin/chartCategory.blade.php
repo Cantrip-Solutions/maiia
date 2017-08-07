@@ -40,10 +40,12 @@
                                 <div class="dd-handle sb-wrap clears">
                                 <span>{{ $category['name'] }}</span>
                                 </div>
-                                 <div class="sub-ct">
+                                <div class="sub-ct">
+                                @if($key != 1)
                                     <a href="{{URL::to('tab/subcategory/add/'.$key)}}" cat_id="{{ $key }}" class="btn btn-xs btn-outline btn-info" >Add sub category</a>
                                     <a href="{{URL::to('tab/category/edit/'.$category['name'].'/'.$key)}}" cat_id="{{ $key }}" class="edit_category"> <i class="fa fa-pencil-square-o"></i></a>
-                                    <a href="{{URL::to('tab/category/delete/'.$category['name'].'/'.$key)}}" cat_id="{{ $key }}" class="delete_category"><i class="fa fa-trash"></i></a>
+                                    <a href="javascript:void(0)" cat_id="{{ $key }}"  cat_name="{{ $category['name'] }}" class="delete_category"><i class="fa fa-trash"></i></a>
+                                @endif
                                </div>
 
                                 @if($category['child'] == 1)
@@ -126,7 +128,7 @@ $(document).ready(function()
                     if(value.child == 1){
                         html +='<button data-action="collapse" type="button" style="display: none;">Collapse</button><button data-action="expand" type="button" style="display: block;">Expand</button>';
                     }
-                    html +='<div class="dd-handle sb-wrap clears"><span>'+value.name+'</span></div><div class="sub-ct"><a href="'+base_url+'/tab/subcategory/add/'+key+'" cat_id="'+key+'" class="btn btn-xs btn-outline btn-info" >Add sub category</a><a href="'+base_url+'/tab/category/edit/'+value.name+'/'+key+'" cat_id="'+key+'" class="edit_category"> <i class="fa fa-pencil-square-o"></i></a><a href="'+base_url+'/tab/subcategory/delete/'+value.name+'/'+key+'" cat_id="'+key+'" class="delete_category"><i class="fa fa-trash"></i></a></div>';
+                    html +='<div class="dd-handle sb-wrap clears"><span>'+value.name+'</span></div><div class="sub-ct"><a href="'+base_url+'/tab/subcategory/add/'+key+'" cat_id="'+key+'" class="btn btn-xs btn-outline btn-info" >Add sub category</a><a href="'+base_url+'/tab/category/edit/'+value.name+'/'+key+'" cat_id="'+key+'" class="edit_category"> <i class="fa fa-pencil-square-o"></i></a><a href="javascript:void(0)" cat_id="'+key+'" cat_name="'+value.name+'" class="delete_category"><i class="fa fa-trash"></i></a></div>';
 
                         if(value.child == 1){
                             html +='<ol class="dd-list" id="parent_cat_'+key+'"></ol>';
@@ -145,21 +147,29 @@ $(document).ready(function()
     });
 
 
-    $('body').on('click' , ".delete_category", function(e){
-        alert("fdffff");
-        $.ajax({
-            'type':'get',
-            'url':$(this).attr('href'),
-            'dataType':'json',
-            'success':function(resp){
-                //console.log(resp);
-                if(resp.status==1){
-                    alert("success");
-                }else{
-                    alert("fsf");
+    $('body').on('click' , ".delete_category", function(){
+        // alert();
+        var cat_name=$(this).attr("cat_name");
+        var cat_id=$(this).attr("cat_id");
+        var obj=$(this);
+        bootbox.confirm("Are you sure to delete this category?", function(result) {
+
+            $.ajax({
+                'type':'post',
+                'url':base_url+'/category/delete',
+                'headers': {'X-CSRF-TOKEN': token},
+                'data':{'cat_name':cat_name,'cat_id':cat_id},
+                'dataType':'json',
+                'success':function(resp){
+                    
+                    if(resp.status==1){
+                        obj.parent('.sub-ct').parent('.dd-item').remove();
+                    }else{
+                        alert("fsf");
+                    }
                 }
-            }
-      });
+            });
+        });
     });
 
 });
