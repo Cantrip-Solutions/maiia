@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('image')->nullable();
             $table->enum('u_role',['A', 'S', 'U'])->default('U')->comment('A=Admin , S=Company user , U=User or consumer');
             $table->text('notes')->nullable();
+            $table->enum('status',['1','0','2'])->default('1')->comment('1=>ACTIVE,0=>INACTIVE,2=>SUSPEND');
             $table->rememberToken();
             $table->timestamps();
         });

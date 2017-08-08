@@ -20,15 +20,12 @@ class CreateProductsTable extends Migration
             $table->integer('cat_id_fk')->unsigned();
             $table->foreign('cat_id_fk')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
-            $table->integer('ammount');
             $table->integer('original_price');
             $table->integer('saling_price');
             $table->integer('quantity');
             $table->text('description');
-            $table->string('image');
             $table->dateTime('expire_on');
-            
-            $table->string('tag');
+            $table->text('tag');
             $table->timestamps();
         });
     }

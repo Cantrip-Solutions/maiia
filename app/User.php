@@ -31,4 +31,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('\App\Model\UserInfo','u_id_fk')->where('default_address_flag','=','1');
     }
+
+    public function getProduct()
+    {
+        return $this->hasMany('\App\Model\product','u_id_fk');
+    }
 }

@@ -27,136 +27,159 @@
                     @if (Session::has('message'))
                        <div class="alert alert-info"><i class="pe-7s-gleam"></i>{{ Session::get('message') }}</div>
                     @endif
-                    {{Form::open(array('files'=>true,'id'=>'formdata','action' => 'CompanyController@createCompany', 'method'=>'POST', 'enctype'=>"multipart/form-data"))}}
+                    {{Form::open(array('files'=>true,'id'=>'formdata','class'=>'form-horizontal','action' => 'CompanyController@createCompany', 'method'=>'POST', 'enctype'=>"multipart/form-data"))}}
                         <div class="form-group">
-                            <label for="company_name" class="control-label">Company Name *:</label>
-                            {!! Form::text('name', '',array('placeholder'=>'Company Name', 'class'=>'form-control')) !!}
-                            @if ($errors->has('name'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('name') }}</strong>
-                                </span>
-                            @endif
+                            <label for="company_name" class="col-sm-2 control-label">Company Name *:</label>
+                            <div class="col-sm-10">
+	                            {!! Form::text('name', '',array('placeholder'=>'Company Name', 'class'=>'form-control')) !!}
+	                            @if ($errors->has('name'))
+	                                <span class="help-block">
+	                                    <strong>{{ $errors->first('name') }}</strong>
+	                                </span>
+	                            @endif
+	                        </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="company_email" class="control-label">Company Email ID *:</label>
-                            {!! Form::text('email', '',array('placeholder'=>'example@domain.com', 'class'=>'form-control')) !!}
-                            @if ($errors->has('email'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('email') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-                        <div class="form-group">
-                            <label for="company_logo" class="control-label">Company Logo *:</label>
-                            {!! Form::file('images') !!}
-                            @if ($errors->has('images'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('images') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-                        
-
-                        <div class="form-group">
-                            <label for="company_address1" class="control-label">Address Line 1 *:</label>
-                            {!! Form::text('address1', '',array('placeholder'=>'', 'class'=>'form-control')) !!}
-                            @if ($errors->has('address1'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('address1') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-                        <div class="form-group">
-                            <label for="company_address2" class="control-label">Address Line 2 :</label>
-                            {!! Form::text('address2', '',array('placeholder'=>'', 'class'=>'form-control')) !!}
-                            @if ($errors->has('address2'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('address2') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-                        <div class="form-group">
-                            <label for="company_country" class="control-label">Country *:</label>
-                            <select class='form-control country' name="country">
-                                <option value="">Select Option</option>
-                                @foreach($countries as $country)
-                                <option value="{{$country->id}}" ccode="{{$country->phonecode}}">{{$country->name}}</option>
-                                @endforeach
-                            </select>
-                            @if ($errors->has('country'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('country') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="company_State" class="control-label">State *:</label>
-                            <select class='form-control state' name="state">
-                            </select>
-                            @if ($errors->has('state'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('state') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-                        <div class="form-group">
-                            <label for="company_city" class="control-label">City:</label>
-                            <select class='form-control city' name="city">
-                            </select>
-                            @if ($errors->has('city'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('city') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-                        <div class="form-group">
-                            <label for="company_phone" class="control-label">Contact Number *:</label>
-                            <div class="input-group m-b">
-                            <span class="input-group-addon country_code"></span>
-                            {!! Form::text('phone', '',array('placeholder'=>'0123456789', 'class'=>'form-control')) !!}
+                            <label for="company_email" class="col-sm-2 control-label">Company Email ID *:</label>
+                            <div class="col-sm-10">
+	                            {!! Form::text('email', '',array('placeholder'=>'example@domain.com', 'class'=>'form-control')) !!}
+	                            @if ($errors->has('email'))
+	                                <span class="help-block">
+	                                    <strong>{{ $errors->first('email') }}</strong>
+	                                </span>
+	                            @endif
                             </div>
-                            @if ($errors->has('phone'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('phone') }}</strong>
-                                </span>
-                            @endif
                         </div>
 
                         <div class="form-group">
-                            <label for="company_postal_code" class="control-label">Pin Code *:</label>
-                            {!! Form::text('postal_code', '',array('placeholder'=>'', 'class'=>'form-control')) !!}
-                            @if ($errors->has('postal_code'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('postal_code') }}</strong>
-                                </span>
-                            @endif
+                            <label for="company_logo" class="col-sm-2 control-label">Company Logo *:</label>
+                            <div class="col-sm-10">
+	                            {!! Form::file('images') !!}
+	                            @if ($errors->has('images'))
+	                                <span class="help-block">
+	                                    <strong>{{ $errors->first('images') }}</strong>
+	                                </span>
+	                            @endif
+	                        </div>
                         </div>
 
                         
 
                         <div class="form-group">
-                            <label for="company_description" class="control-label">Company Short Description *:</label>
-                            {{ Form::textarea('notes','',array('class'=>'form-control')) }}
-                            @if ($errors->has('notes'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('notes') }}</strong>
-                                </span>
-                            @endif
+                            <label for="company_address1" class="col-sm-2 control-label">Address Line 1 *:</label>
+                            <div class="col-sm-10">
+	                            {!! Form::text('address1', '',array('placeholder'=>'', 'class'=>'form-control')) !!}
+	                            @if ($errors->has('address1'))
+	                                <span class="help-block">
+	                                    <strong>{{ $errors->first('address1') }}</strong>
+	                                </span>
+	                            @endif
+	                        </div>
                         </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn w-xs btn-success" name="submit">Submit</button>
-                            <a class="btn w-xs btn-info" href="{{url('/tab/company')}}">Back</a>
+                            <label for="company_address2" class="col-sm-2 control-label">Address Line 2 :</label>
+                            <div class="col-sm-10">
+	                            {!! Form::text('address2', '',array('placeholder'=>'', 'class'=>'form-control')) !!}
+	                            @if ($errors->has('address2'))
+	                                <span class="help-block">
+	                                    <strong>{{ $errors->first('address2') }}</strong>
+	                                </span>
+	                            @endif
+	                        </div>
+                        </div>
 
+                        <div class="form-group">
+                            <label for="company_country" class="col-sm-2 control-label">Country *:</label>
+                            <div class="col-sm-10">
+	                            <select class='form-control country' name="country">
+	                                <option value="">Select Option</option>
+	                                @foreach($countries as $country)
+	                                <option value="{{$country->id}}" ccode="{{$country->phonecode}}">{{$country->name}}</option>
+	                                @endforeach
+	                            </select>
+	                            @if ($errors->has('country'))
+	                                <span class="help-block">
+	                                    <strong>{{ $errors->first('country') }}</strong>
+	                                </span>
+	                            @endif
+	                        </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="company_State" class="col-sm-2 control-label">State *:</label>
+                            <div class="col-sm-10">
+	                            <select class='form-control state' name="state">
+	                            </select>
+	                            @if ($errors->has('state'))
+	                                <span class="help-block">
+	                                    <strong>{{ $errors->first('state') }}</strong>
+	                                </span>
+	                            @endif
+	                        </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="company_city" class="col-sm-2  control-label">City:</label>
+                            <div class="col-sm-10">
+	                            <select class='form-control city' name="city">
+	                            </select>
+	                            @if ($errors->has('city'))
+	                                <span class="help-block">
+	                                    <strong>{{ $errors->first('city') }}</strong>
+	                                </span>
+	                            @endif
+	                        </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="company_phone" class="col-sm-2  control-label">Contact Number *:</label>
+                            <div class="col-sm-10">
+	                            <div class="input-group m-b">
+	                            <span class="input-group-addon country_code"></span>
+	                            {!! Form::text('phone', '',array('placeholder'=>'0123456789', 'class'=>'form-control')) !!}
+	                            </div>
+	                            @if ($errors->has('phone'))
+	                                <span class="help-block">
+	                                    <strong>{{ $errors->first('phone') }}</strong>
+	                                </span>
+	                            @endif
+	                        </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="company_postal_code" class="col-sm-2 control-label">Pin Code *:</label>
+                            <div class="col-sm-10">
+	                            {!! Form::text('postal_code', '',array('placeholder'=>'', 'class'=>'form-control')) !!}
+	                            @if ($errors->has('postal_code'))
+	                                <span class="help-block">
+	                                    <strong>{{ $errors->first('postal_code') }}</strong>
+	                                </span>
+	                            @endif
+	                        </div>
+                        </div>
+
+                        
+
+                        <div class="form-group">
+                            <label for="company_description" class="col-sm-2 control-label">Company Short Description *:</label>
+                            <div class="col-sm-10">
+	                            {{ Form::textarea('notes','',array('class'=>'form-control')) }}
+	                            @if ($errors->has('notes'))
+	                                <span class="help-block">
+	                                    <strong>{{ $errors->first('notes') }}</strong>
+	                                </span>
+	                            @endif
+	                        </div>
+                        </div>
+
+                        <div class="form-group">
+                        	<div class="col-sm-8 col-sm-offset-2">
+	                            <button type="submit" class="btn w-xs btn-success" name="submit">Submit</button>
+	                            <a class="btn w-xs btn-info" href="{{url('/tab/company')}}">Back</a>
+	                        </div>
                         </div>
 
                     {{Form::close()}}

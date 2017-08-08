@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Input;
 use Mail;
 use Session;
 use Image;
+use App\Model\Product;
 
 
 class CategoryController extends Controller
@@ -187,8 +188,9 @@ class CategoryController extends Controller
 
     public function deleteAllCategory($cat_id){
 
-       $res=Category::where('id','=',$cat_id)->delete();
-
+       
+        $product_res=Product::where('cat_id_fk','=',$cat_id)->update(['cat_id_fk'=>1]);
+         $res=Category::where('id','=',$cat_id)->delete();
         $category=Category::where('parent_cat_id','=',$cat_id)->get();
         $categories=$this->formate_category($category,$cat_id);
         if(!empty($categories)){
@@ -205,7 +207,6 @@ class CategoryController extends Controller
         }else{
             return 0;
         }
-
     }
 
     public function deleteCategory(){

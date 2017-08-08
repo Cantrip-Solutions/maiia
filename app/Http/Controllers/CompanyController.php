@@ -222,9 +222,10 @@ class CompanyController extends Controller
     public function destroyCompany($id)
     {
 		$uID = Crypt::decrypt($id);
-    	$userDelete = User::find($uID);
-    	$userDelete->delete();
-    	Session::flash('message', 'Company Profile deleted successfully.');
+		$userUpdate = User::where('id','=',$uID)->update(['status'=> '2']);
+    	// $userDelete = User::find($uID);
+    	// $userDelete->delete();
+    	Session::flash('message', 'Company Profile suspended successfully.');
 		return redirect()->back();
    //  	if (User::where('id', $uID)->exists()) {
 			// Session::flash('message', 'Company Profile deleted successfully.');

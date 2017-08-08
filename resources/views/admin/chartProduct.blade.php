@@ -36,9 +36,10 @@
                             <th>Id</th>
                             <th>Image</th>  
                             <th>Name</th>
-                            <th>Ammount(%)</th>
                             <th>Original Price</th>
                             <th>Saling Price</th>
+                            <th>Company</th>
+                            <th>Category</th>
                             <th>Status</th>
                             <th>Expire on</th>
                             <th>Action</th>
@@ -47,23 +48,29 @@
                         <tbody>
                             @foreach($products as $product)
                             <tr>
+
                                 <td>{{$product->id}}</td>
-                                <td>{!!HTML::image(config('global.productPath').'/'.$product->image, 'alt', array('width'=>'30', 'height'=>'30'))!!}</td>
+                                <td>
+                                {{-- {{$product->defaultImage}} --}}
+                                {!!HTML::image(config('global.productPath').'/'.$product->defaultImage->image, 'alt', array('width'=>'30', 'height'=>'30'))!!}
+                                </td>
                                 <td><a href="/tab/company/view/{{$product->name}}/{{Crypt::encrypt($product->id)}}">{{$product->name}}</a></td>
-                                <td>{{$product->ammount}}</td>
                                 <td>{{$product->original_price}}</td>
                                 <td>{{$product->saling_price}}</td>
+                                <td>{{$product->getUser->name}}</td>
+                                <td>{{$product->getCategory->cat_name}}</td>
                                 <td>@if(strtotime($product->expire_on) < strtotime(date('Y-m-d')) )
                                         Expired
                                     @else
-                                        Active
+                                        Valid
                                     @endif
                                 </td>
                                 <td>
                                      {{ date('Y-m-d',strtotime($product->expire_on)) }}
                                 </td>
                                 <td>
-                                
+                                    <a style="font-size: medium;" class="fa fa-pencil-square-o" href="/tab/product/edit/{{$product->name}}/{{Crypt::encrypt($product->id)}}"></a>
+                                    <a style="font-size: medium;" class="fa fa-trash-o" id="{{Crypt::encrypt($product->id)}}"></a>
                                 </td>
                             </tr>
                             @endforeach
@@ -87,9 +94,9 @@
     var dataTable = $('#example1').dataTable();
     $('.fa-trash-o').on('click', function(){
             var id = $(this).attr('id');
-            bootbox.confirm("Are you sure to delete this User?", function(result) {
+            bootbox.confirm("Are you sure to delete this Product?", function(result) {
                 if (result == true) {
-                    window.location.href = "/tab/company/delete/"+id;
+                    window.location.href = "/tab/product/delete/"+id;
                 } else {
                 }
             });

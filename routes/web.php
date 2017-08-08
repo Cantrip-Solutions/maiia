@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('getCity', 'CompanyController@getCity');
 		Route::post('/tab/company/create', 'CompanyController@createCompany');
 
-		// category rout
+		// category route
 		
 		Route::get('/tab/category', 'CategoryController@chartCategory');
 		Route::get('/tab/category/add',  ['uses'=>'CategoryController@addCategory', 'as'=> 'addCategory']);
@@ -59,6 +59,13 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/tab/product', 'ProductController@chartProduct');
 		Route::get('/tab/product/add',  ['uses'=>'ProductController@addProduct', 'as'=> 'addProduct']);
 		Route::post('/createProduct', 'ProductController@createProduct');
+		Route::get('/tab/product/delete/{id}', 'ProductController@deleteProduct');
+		Route::get('/tab/product/edit/{name}/{id}', 'ProductController@editProduct');
+		Route::post('/tab/product/update', 'ProductController@updateProduct');
+
+
+		//disscount product route
+		//Route::get('tab/productDiscount', 'DiscountProductController@productDiscount');
 		
 	});
 

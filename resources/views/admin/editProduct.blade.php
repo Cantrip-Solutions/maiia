@@ -9,11 +9,11 @@
                     <li> Product Management </li>
                     <li> Product </li>
                     <li class="active">
-                        <span> Add Product </span>
+                        <span> Edit Product </span>
                     </li>
                 </ol>
             </div>
-            <h2 class="font-light m-b-xs"> Add Product </h2>
+            <h2 class="font-light m-b-xs"> Edit Product: {{$productInfo->name}} </h2>
         </div>
     </div>
 </div>
@@ -27,12 +27,14 @@
                        <div class="alert alert-info"><i class="pe-7s-gleam"></i>{{ Session::get('message') }}</div>
                     @endif
 
-                    {{Form::open(array('files'=>true,'id'=>'formdata','class'=>'form-horizontal','action' => 'ProductController@createProduct', 'method'=>'POST', 'enctype'=>"multipart/form-data"))}}
+                    {{Form::open(array('files'=>true,'id'=>'formdata','class'=>'form-horizontal','action' => 'ProductController@updateProduct', 'method'=>'POST', 'enctype'=>"multipart/form-data"))}}
+
+                        <input class="form-control" type="hidden" name="id" id="id" value="{{Crypt::encrypt($productInfo->id)}}">
 
                         <div class="form-group">
                             <label for="name" class="col-sm-2 control-label">Product Name*:</label>
                             <div class="col-sm-10">
-                                {!! Form::text('name', '',array('placeholder'=>'Product Name','class'=>'form-control')) !!}
+                                {!! Form::text('name', $productInfo->name,array('placeholder'=>'Product Name','class'=>'form-control')) !!}
                                 @if ($errors->has('name'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
@@ -45,8 +47,12 @@
                             <label for="u_id_fk" class="col-sm-2 control-label">Company User*:</label>
                             <div class="col-sm-10">
                                 <select class="js-source-states" name="u_id_fk" style="width: 100%">
-                                    @foreach ($companyUsers as $key => $value)
-                                        <option value="{{$value->id}}">{{$value->name}}</option>
+                                    @foreach ($companyUsers as $company)
+                                    @if($company->id == $productInfo->u_id_fk)
+                                        <option value="{{$company->id}}" selected="selected">{{$company->name}}</option>
+                                    @else
+                                        <option value="{{$company->id}}">{{$company->name}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                                 @if ($errors->has('u_id_fk'))
@@ -61,8 +67,12 @@
                             <label for="cat_id_fk" class="col-sm-2 control-label">Category*:</label>
                             <div class="col-sm-10">
                                 <select class="js-source-states" name="cat_id_fk" style="width: 100%">
-                                    @foreach ($categories as $key => $value)
-                                        <option value="{{$value->id}}">{{$value->cat_name}}</option>
+                                    @foreach ($categories as $category)
+                                    @if($category->id == $productInfo->cat_id_fk)
+                                        <option value="{{$category->id}}" selected="selected">{{$category->cat_name}}</option>
+                                    @else
+                                        <option value="{{$category->id}}">{{$category->cat_name}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                                 @if ($errors->has('cat_id_fk'))
@@ -77,7 +87,7 @@
                         <div class="form-group">
                             <label for="original_price" class="col-sm-2 control-label">Original Price*:</label>
                             <div class="col-sm-10">
-                                {!! Form::number('original_price', '',array('placeholder'=>'Original Price','class'=>'form-control')) !!}
+                                {!! Form::number('original_price', $productInfo->original_price,array('placeholder'=>'Original Price','class'=>'form-control')) !!}
                                 @if ($errors->has('original_price'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('original_price') }}</strong>
@@ -89,7 +99,7 @@
                         <div class="form-group">
                             <label for="saling_price" class="col-sm-2 control-label">Saling Price*:</label>
                             <div class="col-sm-10">
-                                {!! Form::number('saling_price', '',array('placeholder'=>'Saling Price','class'=>'form-control')) !!}
+                                {!! Form::number('saling_price', $productInfo->saling_price,array('placeholder'=>'Saling Price','class'=>'form-control')) !!}
                                 @if ($errors->has('saling_price'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('saling_price') }}</strong>
@@ -101,7 +111,7 @@
                         <div class="form-group">
                             <label for="quantity" class="col-sm-2 control-label">Quantity*:</label>
                             <div class="col-sm-10">
-                                {!! Form::number('quantity', '',array('placeholder'=>'Quantity','class'=>'form-control')) !!}
+                                {!! Form::number('quantity', $productInfo->quantity,array('placeholder'=>'Quantity','class'=>'form-control')) !!}
                                 @if ($errors->has('quantity'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('quantity') }}</strong>
@@ -113,8 +123,9 @@
                         <div class="form-group">
                             <label for="expire_on" class="col-sm-2 control-label">Expire Date*:</label>
                             <div class="col-sm-10">
+                            
                                  <div class="input-group date">
-                                    <input type="text" name="expire_on" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                    <input type="text" name="expire_on" value="{{ date('Y-m-d',strtotime($productInfo->expire_on)) }}" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
                                 </div>
                                 @if ($errors->has('expire_on'))
                                     <span class="help-block">
@@ -139,7 +150,7 @@
                         <div class="form-group">
                             <label for="tag" class="col-sm-2 control-label">Tag *:</label>
                             <div class="col-sm-10">
-                                {{ Form::text('tag','',array('placeholder'=>'Men, Women','class'=>'form-control','data-role'=>"tagsinput")) }}
+                                {{ Form::text('tag',$productInfo->tag,array('placeholder'=>'Men, Women','class'=>'form-control','data-role'=>"tagsinput")) }}
                                 @if ($errors->has('tag'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('tag') }}</strong>
@@ -151,7 +162,7 @@
                         <div class="form-group">
                             <label for="description" class="col-sm-2 control-label">Description :</label>
                             <div class="col-sm-10">
-                                {{ Form::textarea('description','',array('id'=>"description", 'name'=>"description",'class'=>'form-control summernote1')) }}
+                                {{ Form::textarea('description',$productInfo->description,array('id'=>"description", 'name'=>"description",'class'=>'form-control summernote1')) }}
                                 @if ($errors->has('description'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('description') }}</strong>
@@ -230,7 +241,6 @@ $(document).ready(function(){
             required: true
         },
         'image': {
-            required: true,
             extension: "PNG|JPEG|JPG"
             
         },
@@ -242,6 +252,7 @@ $(document).ready(function(){
     $(".js-source-states").select2();
     $('.input-group.date').datepicker({ 
         // setDate: new Date(),
+        format: 'yyyy-mm-dd',
         startDate: new Date(),
     });
 

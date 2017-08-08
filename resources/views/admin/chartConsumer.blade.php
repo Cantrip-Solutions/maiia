@@ -35,6 +35,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Contact</th>
+                            <th>Status</th>
                             {{-- <th>City</th> --}}
                             <th>Created At</th>
                             <th>Action</th>
@@ -47,6 +48,15 @@
                                 <td><a href="/tab/consumer/view/{{$user->name}}/{{Crypt::encrypt($user->id)}}">{{$user->name}}</a></td>
                                 <td>{{$user->email}}</td>
                                 <td>{{$user->getdefaultUserInfo->phone}}</td>
+                                <td>
+                                    @if($user->status == 0)
+                                        InActive
+                                    @elseif($user->status == 1)
+                                        Active
+                                    @elseif($user->status == 2)
+                                        Suspended
+                                    @endif
+                                </td>
                                 {{-- <td>{{$user->getdefaultUserInfo->city}}, {{$user->getdefaultUserInfo->country}}</td> --}}
                                 <td>{{$user->created_at}}</td>
                                 <td></td>
