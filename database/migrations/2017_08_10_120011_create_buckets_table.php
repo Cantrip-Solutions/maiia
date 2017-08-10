@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStocksTable extends Migration
+class CreateBucketsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateStocksTable extends Migration
      */
     public function up()
     {
-        Schema::create('stocks', function (Blueprint $table) {
+        Schema::create('buckets', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('pro_id_fk')->unsigned();
             $table->foreign('pro_id_fk')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
-            $table->integer('quantity');
-            $table->text('description')->nullable();
-            $table->dateTime('expire_on');
+            $table->integer('u_id_fk')->unsigned();
+            $table->foreign('u_id_fk')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('quantity')->default('1');
+            $table->integer('buying_price');
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ class CreateStocksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stocks');
+        Schema::dropIfExists('buckets');
     }
 }

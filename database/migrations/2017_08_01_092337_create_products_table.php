@@ -26,6 +26,7 @@ class CreateProductsTable extends Migration
             $table->text('description');
             $table->dateTime('expire_on');
             $table->text('tag');
+            $table->enum('isdelete',['0','1'])->default('0')->comment('0=> Active, 1=> Deleted');
             $table->timestamps();
         });
     }

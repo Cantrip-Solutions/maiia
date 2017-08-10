@@ -164,8 +164,6 @@ $(document).ready(function()
                     
                     if(resp.status==1){
                         obj.parent('.sub-ct').parent('.dd-item').remove();
-                    }else{
-                        alert("fsf");
                     }
                 }
             });

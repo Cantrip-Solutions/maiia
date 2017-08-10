@@ -18,7 +18,7 @@ class Product extends Model
         return $this->hasOne('\App\Model\ProductImage','pro_id_fk')->where('default_image','=','1');
     }
 
-     public function getUser()
+    public function getUser()
     {
         return $this->belongsTo('\App\User','u_id_fk');
     }

@@ -79,19 +79,14 @@
 
                         <div class="form-group">
                             <label for="specifications" class="col-sm-2 control-label">Attributes :</label>
-
-
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" name="att[1][name]" placeholder="Name">
+                            <div class="col-sm-5">
+                                <input type="text" name="att1[name]">
                             </div>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" name="att[1][value]" data-role="tagsinput" placeholder="Values"> 
-                            </div>
-                            <div class="col-sm-2">
-                                <a href="javascript:void(0)" att='1' id="addAttr1" class="addAttr btn btn-info">Add</a>
+                            <div class="col-sm-5">
+                                <input type="text" name="att1[value]">
+                                <button att='1' class="addAttr">Add</button>
                             </div>
                         </div>
-                        <div class="other_attribute"></div>
 
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-2">
@@ -99,7 +94,11 @@
                                 <a class="btn w-xs btn-info" href="{{url('/tab/category')}}">Back</a>
                             </div>
                         </div>
+
+
+
                     {{Form::close()}}
+
                 </div>
             </div>
         </div>
@@ -107,19 +106,10 @@
 </div>
 @push('css')
 {!!HTML::style('admintheme/styles/static_custom.css')!!}
-{!!HTML::style('css/bootstrap-tagsinput.css')!!}
-<style type="text/css">
-
-    .bootstrap-tagsinput{
-        width: 100% !important;
-    }
-
-</style>
 @endpush
 @push('scripts')
 {!! HTML::script('plugins/jquery-validation-1.15.0/dist/jquery.validate.min.js') !!}
 {!! HTML::script('plugins/jquery-validation-1.15.0/dist/additional-methods.min.js') !!}
-{!! HTML::script('js/bootstrap-tagsinput.min.js')!!}
 <script type="text/javascript">
 jQuery.validator.setDefaults({ 
     debug: false 
@@ -139,18 +129,9 @@ $(document).ready(function(){
         }
       }
     });
-
-    $('body').on('click','.addAttr',function(e){
-        e.preventDefault()
-        var attr=$(this).attr('att');
-        var newattr=parseInt(attr)+1;
-        
-        alert(attr);
-        var html='<div class="form-group"><label for="specifications" class="col-sm-2 control-label"></label><div class="col-sm-4"><input type="text" class="form-control" name="att['+newattr+'][name]" placeholder="Name"></div><div class="col-sm-4"><input type="text" class="form-control" name="att['+newattr+'][value]" data-role="tagsinput" placeholder="Values"></div><div class="col-sm-2"><a href="javascript:void(0)" att="'+newattr+'" class="addAttr btn btn-info">Add</a></div></div>';
-        $('.other_attribute').append(html);
-
-        $('#addAttr'+attr).html('<a href="javascript:void(0)" att="'+newattr+'" id="addAttr1" class="addAttr btn btn-info"><i class="fa fa-times"></i></a>');
-
+    $('.addAttr').on('click', function () {
+        var att = $(this).attr('att');
+        $('this').
     })
 });
 </script>

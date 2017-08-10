@@ -137,6 +137,18 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="image" class="col-sm-2 control-label">Other Images:</label>
+                            <div class="col-sm-10">
+                                {!! Form::file('otherImage[]',array('class'=>'btn-primary2','multiple')) !!}
+                                @if ($errors->has('image'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('image') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="tag" class="col-sm-2 control-label">Tag *:</label>
                             <div class="col-sm-10">
                                 {{ Form::text('tag','',array('placeholder'=>'Men, Women','class'=>'form-control','data-role'=>"tagsinput")) }}
@@ -232,7 +244,9 @@ $(document).ready(function(){
         'image': {
             required: true,
             extension: "PNG|JPEG|JPG"
-            
+        },
+        'otherImage': {
+            extension: "PNG|JPEG|JPG"
         },
         'description': {
             required: true

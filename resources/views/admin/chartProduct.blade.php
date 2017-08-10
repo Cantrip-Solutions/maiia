@@ -38,6 +38,7 @@
                             <th>Name</th>
                             <th>Original Price</th>
                             <th>Saling Price</th>
+                            <th>In Stock</th>
                             <th>Company</th>
                             <th>Category</th>
                             <th>Status</th>
@@ -57,6 +58,7 @@
                                 <td><a href="/tab/company/view/{{$product->name}}/{{Crypt::encrypt($product->id)}}">{{$product->name}}</a></td>
                                 <td>{{$product->original_price}}</td>
                                 <td>{{$product->saling_price}}</td>
+                                <td>{{$product->quantity}}</td>
                                 <td>{{$product->getUser->name}}</td>
                                 <td>{{$product->getCategory->cat_name}}</td>
                                 <td>@if(strtotime($product->expire_on) < strtotime(date('Y-m-d')) )
@@ -69,8 +71,10 @@
                                      {{ date('Y-m-d',strtotime($product->expire_on)) }}
                                 </td>
                                 <td>
-                                    <a style="font-size: medium;" class="fa fa-pencil-square-o" href="/tab/product/edit/{{$product->name}}/{{Crypt::encrypt($product->id)}}"></a>
-                                    <a style="font-size: medium;" class="fa fa-trash-o" id="{{Crypt::encrypt($product->id)}}"></a>
+                                    <a style="font-size: medium;" title="Image Gallery" class="pe pe-7s-cloud-upload" href="/tab/product/imageGallery/{{$product->name}}/{{Crypt::encrypt($product->id)}}"></a>
+                                    <a style="font-size: medium;" title="Stoke History" class="pe pe-7s-server" href="/tab/product/stockHistory/{{$product->name}}/{{Crypt::encrypt($product->id)}}"></a>
+                                    <a style="font-size: medium;" title="Edit Product" class="fa fa-pencil-square-o" href="/tab/product/edit/{{$product->name}}/{{Crypt::encrypt($product->id)}}"></a>
+                                    <a style="font-size: medium;" title="Delete Product" class="fa fa-trash-o" id="{{Crypt::encrypt($product->id)}}"></a>
                                 </td>
                             </tr>
                             @endforeach

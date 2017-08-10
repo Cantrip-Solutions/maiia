@@ -13,10 +13,10 @@ use Session;
 class SettingsController extends Controller
 {
     //
-    public function editProfile() {
+   /* public function editProfile() {
     	$live = array('menu'=>'12','parent'=>'2');
     	return view('profile_edit', compact('live'));
-    }
+    }*/
     public function updateProfile( Request $request)
     {
 		$data_id    = Auth::user()->id;
@@ -45,7 +45,7 @@ class SettingsController extends Controller
     	return back();
     }
     public function passwordChange() {
-    	$live = array('menu'=>'34','parent'=>'4');
+    	$live = array('menu'=>'34','parent'=>'9');
     	return view('common.passwordChange', compact('live'));
     }
     public function updatePassword(Request $request)
@@ -63,10 +63,10 @@ class SettingsController extends Controller
         }
         return back();        
     }
-    public function email_template()
+    /*public function email_template()
     {
         $live = array('menu'=>'15','parent'=>'2');
         return view('settingsEmailTemplate', compact('live'));
         
-    }
+    }*/
 }

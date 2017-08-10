@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->char('cat_name', 255);
             $table->string('cat_icon',255);
             $table->text('cat_description')->nullable();
+            $table->text('specifications')->nullable();
             $table->timestamps();
         });
 

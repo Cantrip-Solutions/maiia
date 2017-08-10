@@ -22,7 +22,10 @@
         <div class="col-lg-12">
 
             <div class="hpanel">
-                <div class="panel-body">               
+                <div class="panel-body">  
+                    <p align="right">
+                        <a href="/tab/product/editSpec/{{$productInfo->name}}/{{Crypt::encrypt($productInfo->id)}}" class="btn w-xs btn-info">Edit Specification</a>             
+                    </p>
                     @if (Session::has('message'))
                        <div class="alert alert-info"><i class="pe-7s-gleam"></i>{{ Session::get('message') }}</div>
                     @endif
@@ -108,7 +111,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="quantity" class="col-sm-2 control-label">Quantity*:</label>
                             <div class="col-sm-10">
                                 {!! Form::number('quantity', $productInfo->quantity,array('placeholder'=>'Quantity','class'=>'form-control')) !!}
@@ -118,9 +121,9 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="expire_on" class="col-sm-2 control-label">Expire Date*:</label>
                             <div class="col-sm-10">
                             
@@ -133,7 +136,7 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group">
                             <label for="image" class="col-sm-2 control-label">Product Image*:</label>
@@ -231,15 +234,15 @@ $(document).ready(function(){
         'saling_price': {
             required: true
         },
-        'quantity': {
-            required: true
-        },
+        // 'quantity': {
+        //     required: true
+        // },
         'tag': {
             required: true
         },
-        'expire_on': {
-            required: true
-        },
+        // 'expire_on': {
+        //     required: true
+        // },
         'image': {
             extension: "PNG|JPEG|JPG"
             

@@ -27,11 +27,11 @@ Route::group(['middleware' => 'auth'], function () {
 	//-------------------------Admin Panel-----------------------
 	Route::group(['middleware' => 'role:A'], function () {
 
-		// consumer route
+		// Consumer route
 		Route::get('/tab/consumer', 'ConsumerController@chartConsumer');
 		Route::get('/tab/consumer/view/{name}/{id}', 'ConsumerController@viewConsumer');
 
-		// company user route
+		// Company user route
 		Route::get('/tab/company', 'CompanyController@chartCompany');
 		Route::get('/tab/company/add',  ['uses'=>'CompanyController@addCompany', 'as'=> 'addCompany']);
 		Route::get('/tab/company/edit/{name}/{id}', 'CompanyController@editCompany');
@@ -42,7 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('getCity', 'CompanyController@getCity');
 		Route::post('/tab/company/create', 'CompanyController@createCompany');
 
-		// category route
+		// Category route
 		
 		Route::get('/tab/category', 'CategoryController@chartCategory');
 		Route::get('/tab/category/add',  ['uses'=>'CategoryController@addCategory', 'as'=> 'addCategory']);
@@ -54,18 +54,34 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('updateCategory', 'CategoryController@updateCategory');
 		Route::post('category/delete', 'CategoryController@deleteCategory');
 
-		// product route
+		// Product route
 		 
 		Route::get('/tab/product', 'ProductController@chartProduct');
 		Route::get('/tab/product/add',  ['uses'=>'ProductController@addProduct', 'as'=> 'addProduct']);
 		Route::post('/createProduct', 'ProductController@createProduct');
 		Route::get('/tab/product/delete/{id}', 'ProductController@deleteProduct');
 		Route::get('/tab/product/edit/{name}/{id}', 'ProductController@editProduct');
+		Route::get('/tab/product/editSpec/{name}/{id}', 'ProductController@editSpecification');
+		Route::get('/tab/product/imageGallery/{name}/{id}', 'ProductController@imageGallery');
 		Route::post('/tab/product/update', 'ProductController@updateProduct');
+		Route::get('/tab/product/stockAdjust/{name}/{id}', 'ProductController@addQuantity');
+		Route::post('/tab/product/updateProductQuantity', 'ProductController@updateProductQuantity');
+		Route::get('/tab/product/stockHistory/{name}/{id}', 'ProductController@stockHistory');
+		Route::post('/addToImageGallery', 'ProductController@addToImageGallery');
+		Route::post('/tab/Image/delete', 'ProductController@deleteImage');
+		Route::get('/tab/product/stockHistory/{name}/{id}', 'ProductController@stockHistory');
+
+		// Specification Management
+		Route::get('/tab/chartSpecification',  'SpecificationController@chartSpecification');
+		Route::get('/tab/specification/add',  ['uses'=>'SpecificationController@addSpecification', 'as'=> 'addSpecification']);
 
 
-		//disscount product route
-		//Route::get('tab/productDiscount', 'DiscountProductController@productDiscount');
+		//Discount product route
+		
+		Route::get('/tab/offers/discount', 'OffersController@productDiscount');
+		Route::get('/tab/offers/coupons', 'OffersController@chartCoupons');
+		Route::get('/tab/offers/coupons/add', ['uses'=>'OffersController@addCoupons','as'=> 'addCoupons']);
+		Route::post('/tab/offers/coupons/create', 'OffersController@createCoupon');
 		
 	});
 
