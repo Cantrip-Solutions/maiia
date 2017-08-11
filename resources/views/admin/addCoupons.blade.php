@@ -52,6 +52,29 @@
 	                        </div> --}}
                         </div>
 
+                        <div class="form-group">
+                            <label for="amount" class="col-sm-2 control-label">Amount *:</label>
+                            <div class="col-sm-10">
+                                {!! Form::number('code', '',array('placeholder'=>'AA12345', 'class'=>'form-control', 'id'=>'code')) !!}
+                                {{-- <input type="text" class="form-control"> --}}
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-primary" id="getNumber">+</button>
+                                </span>
+                                @if ($errors->has('code'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('code') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                            {{-- <div class="col-sm-10">
+                                @if ($errors->has('code'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('code') }}</strong>
+                                    </span>
+                                @endif
+                                <button id="getNumber">+</button>
+                            </div> --}}
+                        </div>
 
                         <div class="form-group">
                         	<div class="col-sm-8 col-sm-offset-2">

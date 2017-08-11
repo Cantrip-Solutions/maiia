@@ -69,4 +69,12 @@ class SettingsController extends Controller
         return view('settingsEmailTemplate', compact('live'));
         
     }*/
+
+    public function menuManagement()
+    {
+        # code...
+        $live = array('menu'=>'40','parent'=>'9');
+        return view('admin.menuManagement', compact('live'));
+
+    }
 }

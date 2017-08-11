@@ -21,6 +21,8 @@ class CreateTransactionsTable extends Migration
             $table->integer('u_id_fk')->unsigned();
             $table->foreign('u_id_fk')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('amount');
+            $table->string('coupon_code');
+            $table->integer('delivery_charges');
             $table->string('method');
             $table->enum('status',['FAILED','COMPLETE'])->default('FAILED');
             $table->timestamps();

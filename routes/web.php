@@ -83,6 +83,16 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/tab/offers/coupons/add', ['uses'=>'OffersController@addCoupons','as'=> 'addCoupons']);
 		Route::post('/tab/offers/coupons/create', 'OffersController@createCoupon');
 		
+		//Discount product route
+		Route::get('/tab/orders', 'OrdersController@chartOrders');
+		Route::get('/tab/transactions', 'OrdersController@chartTransactions');
+
+		// ------------------------Settings---------------------------
+
+		// Menu Management
+		Route::get('/settings/menuManagement', 'SettingsController@menuManagement');
+
+
 	});
 
 	//-------------------------Vendor Panel-----------------------

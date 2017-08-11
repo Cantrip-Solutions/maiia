@@ -127,15 +127,22 @@
 
                         <div class="form-group">
                             <label for="company_city" class="control-label">City:</label>
-                            <select class='form-control city' name="city">
+                            <input list="cities" name="city" class="form-control cities" value="{{$userInfo->city}}">
+                            <datalist id="cities" class="city">
+                                @foreach($cities as $city)
+                                    <option value="{{$city->name}}">
+                                @endforeach
+                            </datalist>
+
+                            {{-- <select class='form-control city' name="city">
                                 @foreach($cities as $city)
                                     @if($userInfo->city == $city->id)
-                                        <option value="{{$city->id}}" selected>{{$city->name}}</option>
+                                        <option value="{{$city->name}}" selected>{{$city->name}}</option>
                                     @else
-                                        <option value="{{$city->id}}">{{$city->name}}</option>
+                                        <option value="{{$city->name}}">{{$city->name}}</option>
                                     @endif
                                 @endforeach
-                            </select>
+                            </select> --}}
                             @if ($errors->has('city'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('city') }}</strong>
@@ -188,6 +195,9 @@
 {!! HTML::script('plugins/jquery-validation-1.15.0/dist/jquery.validate.min.js') !!}
 {!! HTML::script('plugins/jquery-validation-1.15.0/dist/additional-methods.min.js') !!}
 <script type="text/javascript">
+$('.cities').on('click',function () {
+    $('.cities').attr('autocomplete','on');
+});
 $('.country').on('change',function () {
     var country = $('.country').val();
     var token = $('input[name=_token]').val();
@@ -201,6 +211,7 @@ $('.country').on('change',function () {
         'success':function(resp){
             $('.state').children('option').empty().remove();
             $('.city').children('option').empty().remove();
+            $('<option value="">Select State</option>').appendTo('.state');
             $.each(resp,function(intex,info){
               $('<option value="'+ info.id +'">'+ info.name +'</option>').appendTo('.state');
             });
@@ -221,7 +232,8 @@ $('.state').on('change',function () {
         'success':function(resp){
             $('.city').children('option').empty().remove();
             $.each(resp,function(intex,info){
-              $('<option value="'+ info.id +'">'+ info.name +'</option>').appendTo('.city');
+                $('<option value="'+ info.name +'">').appendTo('.city');
+                // $('<option value="'+ info.name +'">'+ info.name +'</option>').appendTo('.city');
             });
             $('.row').unmask();
 

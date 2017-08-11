@@ -79,19 +79,23 @@
 
                         <div class="form-group">
                             <label for="specifications" class="col-sm-2 control-label">Attributes :</label>
+                            
+                            <div class="col-sm-10">
+                                <div class="other_attribute1 row" style="padding-bottom: 20px;" >
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="att[1][name]" placeholder="Name">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control" name="att[1][value]" data-role="tagsinput" placeholder="Values"> 
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a href="javascript:void(0)" att='1' id="addAttr1" class="addAttr btn btn-info">Add</a>
+                                    </div>
+                                </div>
 
-
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" name="att[1][name]" placeholder="Name">
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" name="att[1][value]" data-role="tagsinput" placeholder="Values"> 
-                            </div>
-                            <div class="col-sm-2">
-                                <a href="javascript:void(0)" att='1' id="addAttr1" class="addAttr btn btn-info">Add</a>
                             </div>
                         </div>
-                        <div class="other_attribute"></div>
+                       
 
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-2">
@@ -144,14 +148,19 @@ $(document).ready(function(){
         e.preventDefault()
         var attr=$(this).attr('att');
         var newattr=parseInt(attr)+1;
-        
-        alert(attr);
-        var html='<div class="form-group"><label for="specifications" class="col-sm-2 control-label"></label><div class="col-sm-4"><input type="text" class="form-control" name="att['+newattr+'][name]" placeholder="Name"></div><div class="col-sm-4"><input type="text" class="form-control" name="att['+newattr+'][value]" data-role="tagsinput" placeholder="Values"></div><div class="col-sm-2"><a href="javascript:void(0)" att="'+newattr+'" class="addAttr btn btn-info">Add</a></div></div>';
-        $('.other_attribute').append(html);
 
-        $('#addAttr'+attr).html('<a href="javascript:void(0)" att="'+newattr+'" id="addAttr1" class="addAttr btn btn-info"><i class="fa fa-times"></i></a>');
+        var html='<div class="other_attribute'+newattr+' row" style="padding-bottom: 20px;" ><div class="col-sm-4"><input type="text" class="form-control" name="att['+newattr+'][name]" placeholder="Name"></div>'+
+            '<div class="col-sm-4"><input type="text" class="form-control" name="att['+newattr+'][value]" data-role="tagsinput" placeholder="Values"></div><div class="col-sm-2"><a href="javascript:void(0)" id="addAttr'+newattr+'"  att="'+newattr+'" class="addAttr btn btn-info">Add</a></div></div>';
+        $('.other_attribute'+attr).parent('div').append(html);
+        $('input[data-role="tagsinput"]').tagsinput();
+        $('#addAttr'+attr).parent('div').html('<a href="javascript:void(0)" att="'+newattr+'" class="removeAttr btn btn-info"><i class="fa fa-times"></i></a>');
 
-    })
+    });
+
+    $('body').on('click','.removeAttr',function(e){
+
+        $(this).parent('div').parent('div').remove();
+    });
 });
 </script>
 @endpush

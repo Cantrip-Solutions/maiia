@@ -54,9 +54,11 @@ class CategoryController extends Controller
     }
 
     public function createCategory(Request $req)
-    {
+    {   
+        
 		$cat_name  = $req->cat_name;
 		$cat_description = $req->cat_description;
+        $att= $req->att;
 		$rules = array(
 			// 'file' => 'required|mimes:png,gif,jpeg,jpg',
 			'cat_name'    => 'required'
@@ -83,6 +85,7 @@ class CategoryController extends Controller
         		$ctaegory->cat_name = $cat_name;
         		$ctaegory->cat_description = $cat_description;
                 $ctaegory->cat_icon = $filename;
+                $ctaegory->specifications = serialize($att);
                 if($req->subcategory){
                     $ctaegory->parent_cat_id=$req->parent_cat_id;
                 }else{
@@ -142,6 +145,7 @@ class CategoryController extends Controller
         $cat_name  = $req->cat_name;
         $cat_description = $req->cat_description;
         $cat_id=$req->id;
+        $att= $req->att;
         $rules = array(
             // 'file' => 'required|mimes:png,gif,jpeg,jpg',
             'cat_name'    => 'required'
@@ -176,7 +180,8 @@ class CategoryController extends Controller
             Category::where('id', $cat_id)->update([
                 'cat_name' => $cat_name,
                 'cat_icon'=>$filename,
-                'cat_description'=>$cat_description
+                'cat_description'=>$cat_description,
+                'specifications' => serialize($att),
             ]);
             
             Session::flash('message', 'Cetagory Edited successfull.');

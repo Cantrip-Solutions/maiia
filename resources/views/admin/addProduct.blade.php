@@ -60,7 +60,7 @@
                         <div class="form-group">
                             <label for="cat_id_fk" class="col-sm-2 control-label">Category*:</label>
                             <div class="col-sm-10">
-                                <select class="js-source-states" name="cat_id_fk" style="width: 100%">
+                                <select class="js-source-states cat_id_fk" name="cat_id_fk" style="width: 100%">
                                     @foreach ($categories as $key => $value)
                                         <option value="{{$value->id}}">{{$value->cat_name}}</option>
                                     @endforeach
@@ -99,7 +99,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="quantity" class="col-sm-2 control-label">Quantity*:</label>
+                            <label for="quantity" class="col-sm-2 control-label">Initial Stock*:</label>
                             <div class="col-sm-10">
                                 {!! Form::number('quantity', '',array('placeholder'=>'Quantity','class'=>'form-control')) !!}
                                 @if ($errors->has('quantity'))
@@ -125,7 +125,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="image" class="col-sm-2 control-label">Product Image*:</label>
+                            <label for="image" class="col-sm-2 control-label">Product Default Image*:</label>
                             <div class="col-sm-10">
                                 {!! Form::file('image',array('class'=>'btn-primary2')) !!}
                                 @if ($errors->has('image'))
@@ -137,7 +137,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="image" class="col-sm-2 control-label">Other Images:</label>
+                            <label for="image" class="col-sm-2 control-label">Product Other Images:</label>
                             <div class="col-sm-10">
                                 {!! Form::file('otherImage[]',array('class'=>'btn-primary2','multiple')) !!}
                                 @if ($errors->has('image'))
@@ -194,6 +194,13 @@
     {!!HTML::style('admintheme/vendor/summernote/dist/summernote-bs3.css')!!}
     {!!HTML::style('admintheme/vendor/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.min.css')!!}
     {!!HTML::style('css/bootstrap-tagsinput.css')!!}
+    <style type="text/css">
+
+    .bootstrap-tagsinput{
+        width: 100% !important;
+    }
+
+</style>
    
 @endpush
 @push('scripts')
@@ -268,6 +275,25 @@ $(document).ready(function(){
            ]
     });
 
+    /*$('.cat_id_fk').on('change',function(){
+        var cat_id=$(this).val();
+        alert(cat_id);
+        $.ajax({
+            'type':'post',
+            'url':"{{URL::to('getSubCategories')}}",
+            'headers': {'X-CSRF-TOKEN': token},
+            'data':{'cat_id':cat_id},
+            'dataType':'json',
+            //'beforeSend':function(){ $('.row').mask('Please Wait...'); },
+            'success':function(resp){
+                console.log(resp);
+
+
+                $('.row').unmask();
+            }
+        });
+    });*/
+   
 });
 </script>
 @endpush

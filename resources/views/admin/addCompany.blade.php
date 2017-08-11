@@ -124,8 +124,11 @@
                         <div class="form-group">
                             <label for="company_city" class="col-sm-2  control-label">City:</label>
                             <div class="col-sm-10">
-	                            <select class='form-control city' name="city">
-	                            </select>
+                                <input list="cities" name="city" class="form-control cities">
+                                <datalist id="cities" class="city">
+                                </datalist>
+	                            {{-- <select class='form-control city' name="city">
+	                            </select> --}}
 	                            @if ($errors->has('city'))
 	                                <span class="help-block">
 	                                    <strong>{{ $errors->first('city') }}</strong>
@@ -197,6 +200,9 @@
 {!! HTML::script('plugins/jquery-validation-1.15.0/dist/jquery.validate.min.js') !!}
 {!! HTML::script('plugins/jquery-validation-1.15.0/dist/additional-methods.min.js') !!}
 <script type="text/javascript">
+$('.cities').on('click',function () {
+    $('.cities').attr('autocomplete','on');
+});
 $('.country').on('change',function () {
     var country = $('.country').val();
     var ccode = $(this).find('option:selected').attr('ccode');
@@ -212,6 +218,7 @@ $('.country').on('change',function () {
         'success':function(resp){
             $('.state').children('option').empty().remove();
             $('.city').children('option').empty().remove();
+            $('<option value="">Select State</option>').appendTo('.state');
             $.each(resp,function(intex,info){
               $('<option value="'+ info.id +'">'+ info.name +'</option>').appendTo('.state');
             });
@@ -232,7 +239,8 @@ $('.state').on('change',function () {
         'success':function(resp){
             $('.city').children('option').empty().remove();
             $.each(resp,function(intex,info){
-              $('<option value="'+ info.id +'">'+ info.name +'</option>').appendTo('.city');
+              $('<option value="'+ info.name +'">').appendTo('.city');
+              // $('<option value="'+ info.id +'">'+ info.name +'</option>').appendTo('.city');
             });
             $('.row').unmask();
         }

@@ -25,7 +25,9 @@ class CreateOrdersTable extends Migration
             $table->string('shipping_address');
             $table->integer('amount');
             $table->integer('quantity');
-            $table->enum('status',['PENDING','PROCESSING','DISPATCHED','DELIVERED',''])->default('FAILED');
+            $table->integer('total_price');
+            $table->string('invoice_path');
+            $table->enum('status',['0','1','2','3','4','5','6','7','8'])->default('0')->comment("0=>PENDING 1=>PROCESSING 2=>DISPATCHED 3=>DELIVERED 4=>REFUND REQUEST 5=>PRODUCT RECEIVED 6=>REFUNDED 7=>REPLACEMENT REQUEST 8=>REPLACED");
             $table->timestamps();
         });
     }
