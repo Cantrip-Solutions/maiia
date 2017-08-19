@@ -45,7 +45,7 @@
                             @foreach($users as $user)
                             <tr>
                                 <td>{{$user->id}}</td>
-                                <td><a href="/tab/consumer/view/{{$user->name}}/{{Crypt::encrypt($user->id)}}">{{$user->name}}</a></td>
+                                <td>{{$user->name}}</td>
                                 <td>{{$user->email}}</td>
                                 <td>{{$user->getdefaultUserInfo->phone}}</td>
                                 <td>

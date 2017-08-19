@@ -42,25 +42,10 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="u_id_fk" class="col-sm-2 control-label">Company User*:</label>
-                            <div class="col-sm-10">
-                                <select class="js-source-states" name="u_id_fk" style="width: 100%">
-                                    @foreach ($companyUsers as $key => $value)
-                                        <option value="{{$value->id}}">{{$value->name}}</option>
-                                    @endforeach
-                                </select>
-                                @if ($errors->has('u_id_fk'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('u_id_fk') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
                             <label for="cat_id_fk" class="col-sm-2 control-label">Category*:</label>
                             <div class="col-sm-10">
-                                <select class="js-source-states cat_id_fk" name="cat_id_fk" style="width: 100%">
+                                <select class="js-example-placeholder-single cat_id_fk" name="cat_id_fk" style="width: 100%">
+                                	<option value="">Select a Category</option>
                                     @foreach ($categories as $key => $value)
                                         <option value="{{$value->id}}">{{$value->cat_name}}</option>
                                     @endforeach
@@ -72,7 +57,8 @@
                                 @endif
                             </div>
                         </div>
-
+                        
+                        <input type="hidden" name="u_id_fk" value="{{ Auth::user()->id }}">
 
                         <div class="form-group">
                             <label for="original_price" class="col-sm-2 control-label">Original Price*:</label>
@@ -171,6 +157,9 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="specification_html">
+                                                       
+                        </div>
 
                         <div class="form-group">
                             <div class="col-sm-8 col-sm-offset-2">
@@ -260,7 +249,10 @@ $(document).ready(function(){
         },
       }
     });
-    $(".js-source-states").select2();
+    $(".js-example-placeholder-single").select2({
+    	placeholder: "Select a Category"
+    });
+
     $('.input-group.date').datepicker({ 
         // setDate: new Date(),
         startDate: new Date(),
@@ -275,24 +267,49 @@ $(document).ready(function(){
            ]
     });
 
-    /*$('.cat_id_fk').on('change',function(){
-        var cat_id=$(this).val();
-        alert(cat_id);
-        $.ajax({
-            'type':'post',
-            'url':"{{URL::to('getSubCategories')}}",
-            'headers': {'X-CSRF-TOKEN': token},
-            'data':{'cat_id':cat_id},
-            'dataType':'json',
-            //'beforeSend':function(){ $('.row').mask('Please Wait...'); },
-            'success':function(resp){
-                console.log(resp);
-
-
-                $('.row').unmask();
-            }
+    function toTitleCase(str) {
+    return str.replace(/(?:^|\s)\w/g, function(match) {
+        return match.toUpperCase();
         });
-    });*/
+    }
+
+    var token="{{ csrf_token() }}";
+
+    $('.cat_id_fk').on('change',function(){
+        var cat_id=$(this).val();
+        if(cat_id != ''){
+	        $.ajax({
+	            'type':'post',
+	            'url':"{{URL::to('getSpecification')}}",
+	            'headers': {'X-CSRF-TOKEN': token},
+	            'data':{'cat_id':cat_id},
+	            'dataType':'json',
+	            'success':function(resp){
+	                //console.log(resp);
+                    //var obj=jQuery.parseJSON(resp);
+	                var html='';
+                    $.each( resp, function( key, specification ) {
+                        var specificationval=specification.value;
+                        
+                        if(specificationval == null){
+                           html+='<div class="form-group"><label for="name" class="col-sm-2 control-label">'+toTitleCase(specification.name)+' *:</label><div class="col-sm-10"><input type="text" name="specification['+specification.name+']" value="" placeholder="Value" class="form-control"></div></div>';
+                        }else{
+                            html+='<div class="form-group"><label for="cat_id_fk" class="col-sm-2 control-label">'+toTitleCase(specification.name)+'*:</label><div class="col-sm-10"><select class="js-example-select2 cat_id_fk" name="specification['+specification.name+']" style="width: 100%"><option value="">Select a Value</option>';
+                                    var obj=specificationval.split(",");
+                                    var i;
+                                    for (i = 0; i < obj.length; ++i) {
+                                        html+='<option value="'+obj[i]+'">'+obj[i]+'</option>';
+                                    }
+                            html+='</select></div></div>';
+                        }
+
+                        $('.specification_html').html(html);
+                        $(".js-example-select2").select2();
+                    });
+	            }
+	        });
+	    }
+    });
    
 });
 </script>

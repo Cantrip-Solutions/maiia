@@ -11,16 +11,29 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+
+ Route::get('/','HomeController@index');
+ //Route::get('/miia-registration', 'HomeController@registrationView');
+//Route::get('/miia-login', 'HomeController@loginView');
+//Route::post('/submitRegistration', 'HomeController@submitRegistration');
+//Route::post('/submitLogin', 'HomeController@submitLogin');
+
+//Route::get('/get_all_category/{id}', 'HomeController@get_all_category');
+
+
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
 
+    // Route::get('/logout','HomeController@logout');
+	
 	Route::get('/dashboard', 'DashboardController@gotoDashboard')->middleware('role:A|S');
 
 
@@ -68,12 +81,14 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('/tab/product/updateProductQuantity', 'ProductController@updateProductQuantity');
 		Route::get('/tab/product/stockHistory/{name}/{id}', 'ProductController@stockHistory');
 		Route::post('/addToImageGallery', 'ProductController@addToImageGallery');
-		Route::post('/tab/Image/delete', 'ProductController@deleteImage');
 		Route::get('/tab/product/stockHistory/{name}/{id}', 'ProductController@stockHistory');
+		Route::post('/tab/image/delete', 'ProductController@deleteImage');
 
 		// Specification Management
 		Route::get('/tab/chartSpecification',  'SpecificationController@chartSpecification');
 		Route::get('/tab/specification/add',  ['uses'=>'SpecificationController@addSpecification', 'as'=> 'addSpecification']);
+		Route::post('/getSpecification', 'ProductController@getSpecification');
+		
 
 
 		//Discount product route
@@ -83,7 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/tab/offers/coupons/add', ['uses'=>'OffersController@addCoupons','as'=> 'addCoupons']);
 		Route::post('/tab/offers/coupons/create', 'OffersController@createCoupon');
 		
-		//Discount product route
+		//Order route
 		Route::get('/tab/orders', 'OrdersController@chartOrders');
 		Route::get('/tab/transactions', 'OrdersController@chartTransactions');
 

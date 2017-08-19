@@ -160,7 +160,7 @@ $(document).ready(function(){
 	            $.ajax({
 
 	                'type':'post',
-	                'url':base_url+'/tab/Image/delete/',
+	                'url':base_url+'/tab/image/delete',
 	                'headers': {'X-CSRF-TOKEN': token},
 	                'data':{'id':id},
 	                'dataType':'json',

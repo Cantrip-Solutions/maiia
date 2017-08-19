@@ -57,7 +57,7 @@ return [
 
     'from' => [
         'address' => 'dipankar.cantripsolutions@gmail.com',
-        'name' => 'Maiiam',
+        'name' => 'Maiia',
     ],
 
     /*
@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'encryption' => env('MAIL_ENCRYPTION', 'ssl'),
+    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
 
     /*
     |--------------------------------------------------------------------------
@@ -84,9 +84,12 @@ return [
     |
     */
 
-    'username' => 'dipankar.cantripsolutions@gmail.com',
+    'username' => env('MAIL_USERNAME'),
+    // 'username' => 'dipankar.cantripsolutions@gmail.com',
 
-    'password' => 'ipqinzitvgltfbvr',
+    'password' => env('MAIL_PASSWORD'),
+    // 'password' => 'dipankar@123',
+    // 'password' => 'ipqinzitvgltfbvr', //ok
     // 'password' => 'fkarxsnozuavwrzr',
 
     /*

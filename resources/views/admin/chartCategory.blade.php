@@ -43,7 +43,7 @@
                                 <div class="sub-ct">
                                 @if($key != 1)
                                     <a href="{{URL::to('tab/subcategory/add/'.$key)}}" cat_id="{{ $key }}" class="btn btn-xs btn-outline btn-info" >Add sub category</a>
-                                    <a href="{{URL::to('tab/category/edit/'.$category['name'].'/'.$key)}}" cat_id="{{ $key }}" class="edit_category"> <i class="fa fa-pencil-square-o"></i></a>
+                                    <a href="{{URL::to('tab/category/edit/'.urlencode($category['name']).'/'.$key)}}" cat_id="{{ $key }}" class="edit_category"> <i class="fa fa-pencil-square-o"></i></a>
                                     <a href="javascript:void(0)" cat_id="{{ $key }}"  cat_name="{{ $category['name'] }}" class="delete_category"><i class="fa fa-trash"></i></a>
                                 @endif
                                </div>

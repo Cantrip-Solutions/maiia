@@ -23,9 +23,7 @@
 
             <div class="hpanel">
                 <div class="panel-body">  
-                    <p align="right">
-                        <a href="/tab/product/editSpec/{{$productInfo->name}}/{{Crypt::encrypt($productInfo->id)}}" class="btn w-xs btn-info">Edit Specification</a>             
-                    </p>
+                    
                     @if (Session::has('message'))
                        <div class="alert alert-info"><i class="pe-7s-gleam"></i>{{ Session::get('message') }}</div>
                     @endif
@@ -46,30 +44,12 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="u_id_fk" class="col-sm-2 control-label">Company User*:</label>
-                            <div class="col-sm-10">
-                                <select class="js-source-states" name="u_id_fk" style="width: 100%">
-                                    @foreach ($companyUsers as $company)
-                                    @if($company->id == $productInfo->u_id_fk)
-                                        <option value="{{$company->id}}" selected="selected">{{$company->name}}</option>
-                                    @else
-                                        <option value="{{$company->id}}">{{$company->name}}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
-                                @if ($errors->has('u_id_fk'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('u_id_fk') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <label for="cat_id_fk" class="col-sm-2 control-label">Category*:</label>
                             <div class="col-sm-10">
-                                <select class="js-source-states" name="cat_id_fk" style="width: 100%">
+                                <select class="js-source-states cat_id_fk" name="cat_id_fk" style="width: 100%">
+                                    <option value="">Select a Category</option>
                                     @foreach ($categories as $category)
                                     @if($category->id == $productInfo->cat_id_fk)
                                         <option value="{{$category->id}}" selected="selected">{{$category->cat_name}}</option>
@@ -86,6 +66,7 @@
                             </div>
                         </div>
 
+                        <input type="hidden" name="u_id_fk" value="{{ Auth::user()->id }}">
 
                         <div class="form-group">
                             <label for="original_price" class="col-sm-2 control-label">Original Price*:</label>
@@ -100,7 +81,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="saling_price" class="col-sm-2 control-label">Saling Price*:</label>
+                            <label for="saling_price" class="col-sm-2 control-label">Selling Price*:</label>
                             <div class="col-sm-10">
                                 {!! Form::number('saling_price', $productInfo->saling_price,array('placeholder'=>'Saling Price','class'=>'form-control')) !!}
                                 @if ($errors->has('saling_price'))
@@ -111,8 +92,8 @@
                             </div>
                         </div>
 
-                        {{-- <div class="form-group">
-                            <label for="quantity" class="col-sm-2 control-label">Quantity*:</label>
+                        <div class="form-group">
+                            <label for="quantity" class="col-sm-2 control-label">Stock Adjustment*:</label>
                             <div class="col-sm-10">
                                 {!! Form::number('quantity', $productInfo->quantity,array('placeholder'=>'Quantity','class'=>'form-control')) !!}
                                 @if ($errors->has('quantity'))
@@ -121,7 +102,7 @@
                                     </span>
                                 @endif
                             </div>
-                        </div> --}}
+                        </div>
 
                         {{-- <div class="form-group">
                             <label for="expire_on" class="col-sm-2 control-label">Expire Date*:</label>
@@ -172,6 +153,52 @@
                                     </span>
                                 @endif
                             </div>
+                        </div>
+
+                        <div class="specification_html">
+                        <?php $specificationarray=array(); ?>
+                            @foreach ($categories as $category)
+                                @if($category->id == $productInfo->cat_id_fk)
+                                    <?php
+                                        $specificationarray=unserialize($category->specifications); 
+                                    ?>
+                                @endif
+                            @endforeach  
+                            @foreach($specificationarray as $key => $specificationval)
+                                <?php $attr=unserialize($productInfo->specification);?>
+
+                                @if($specificationval['value'] == "")
+
+                                    <div class="form-group">
+                                        <label for="name" class="col-sm-2 control-label">{{ ucwords($specificationval['name']) }} *:</label>
+                                        <div class="col-sm-10">
+
+                                            <input type="text" name="specification[{{ $specificationval['name'] }}]" value="{{ $attr[$specificationval['name']]}}" placeholder="Value" class="form-control">
+                                        </div>
+                                    </div>
+
+                                @else
+                                    <?php 
+                                        $attrval=explode(',', $specificationval['value']);
+                                    ?>
+                                    <div class="form-group">
+                                        <label for="cat_id_fk" class="col-sm-2 control-label">{{ ucwords($specificationval['name']) }} *:</label>
+                                        <div class="col-sm-10">
+                                            <select class="js-example-select2 cat_id_fk" name="specification[{{ $specificationval['name'] }}]" style="width: 100%">
+                                                <option value="">Select a Value</option>
+                                                @foreach($attrval as $key1 => $val)
+                                                    @if($val == $attr[$specificationval['name']])
+                                                        <option value="{{$val}}" selected>{{$val}}</option>
+                                                    @else
+                                                        <option value="{{$val}}">{{$val}}</option>
+                                                    @endif
+                                                @endforeach  
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                @endif
+                            @endforeach                 
                         </div>
 
                         <div class="form-group">
@@ -234,9 +261,9 @@ $(document).ready(function(){
         'saling_price': {
             required: true
         },
-        // 'quantity': {
-        //     required: true
-        // },
+        'quantity': {
+            required: true
+        },
         'tag': {
             required: true
         },
@@ -253,6 +280,8 @@ $(document).ready(function(){
       }
     });
     $(".js-source-states").select2();
+    $(".js-example-select2").select2();
+   
     $('.input-group.date').datepicker({ 
         // setDate: new Date(),
         format: 'yyyy-mm-dd',
@@ -266,6 +295,50 @@ $(document).ready(function(){
                ['textsize', ['fontsize']],
                ['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
            ]
+    });
+
+    function toTitleCase(str) {
+    return str.replace(/(?:^|\s)\w/g, function(match) {
+        return match.toUpperCase();
+        });
+    }
+
+    var token="{{ csrf_token() }}";
+
+    $('.cat_id_fk').on('change',function(){
+        var cat_id=$(this).val();
+        if(cat_id != ''){
+            $.ajax({
+                'type':'post',
+                'url':"{{URL::to('getSpecification')}}",
+                'headers': {'X-CSRF-TOKEN': token},
+                'data':{'cat_id':cat_id},
+                'dataType':'json',
+                'success':function(resp){
+                    //console.log(resp);
+                    //var obj=jQuery.parseJSON(resp);
+                    var html='';
+                    $.each( resp, function( key, specification ) {
+                        var specificationval=specification.value;
+                        
+                        if(specificationval == null){
+                           html+='<div class="form-group"><label for="name" class="col-sm-2 control-label">'+toTitleCase(specification.name)+' *:</label><div class="col-sm-10"><input type="text" name="specification['+specification.name+']" value="" placeholder="Value" class="form-control"></div></div>';
+                        }else{
+                            html+='<div class="form-group"><label for="cat_id_fk" class="col-sm-2 control-label">'+toTitleCase(specification.name)+'*:</label><div class="col-sm-10"><select class="js-example-select2 cat_id_fk" name="specification['+specification.name+']" style="width: 100%"><option value="">Select a Value</option>';
+                                    var obj=specificationval.split(",");
+                                    var i;
+                                    for (i = 0; i < obj.length; ++i) {
+                                        html+='<option value="'+obj[i]+'">'+obj[i]+'</option>';
+                                    }
+                            html+='</select></div></div>';
+                        }
+
+                        $('.specification_html').html(html);
+                        $(".js-example-select2").select2();
+                    });
+                }
+            });
+        }
     });
 
 });

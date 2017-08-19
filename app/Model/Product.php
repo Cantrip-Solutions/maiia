@@ -23,4 +23,10 @@ class Product extends Model
         return $this->belongsTo('\App\User','u_id_fk');
     }
 
+    public function getOrders()
+    {
+        return $this->hasMany('\App\Model\Orders','pro_id_fk');
+    }
+
+
 }

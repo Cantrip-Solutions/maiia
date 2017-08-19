@@ -25,7 +25,8 @@ class CreateProductsTable extends Migration
             $table->integer('quantity');
             $table->text('description');
             $table->dateTime('expire_on');
-            $table->text('tag');
+            $table->text('tag')->nullable();
+            $table->text('specification')->nullable();
             $table->enum('isdelete',['0','1'])->default('0')->comment('0=> Active, 1=> Deleted');
             $table->timestamps();
         });

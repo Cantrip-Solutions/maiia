@@ -32,14 +32,14 @@ class ProductController extends Controller
     	$live  = array('menu'=>'35','parent'=>'3');
     	$companyUsers = User::where('u_role','=','S')->where('status','!=','2')->get();
     	$categories=Category::where('id','<>',1)->get();
-    	//echo "<pre>";print_r($categories);
+    	//echo "<pre>";print_r($categories);echo "</pre>";
     	return view('admin.addProduct', compact('live','companyUsers','categories'));
     }
 
     public function createProduct(){
 
     	$data=Input::except('_token','submit');
-        /*echo "<pre>";
+       /* echo "<pre>";
         print_r($data);
         exit;*/
         $name           = $data['name'];
@@ -51,6 +51,7 @@ class ProductController extends Controller
         $tag            = $data['tag'];
         $expire_on      = $data['expire_on'];
         $description    = $data['description'];
+        $specifiaction  = serialize($data['specification']);
 
 		$rules = array(
 			// 'file' => 'required|mimes:png,gif,jpeg,jpg',
@@ -88,7 +89,7 @@ class ProductController extends Controller
                 $image    = Input::file('image');
                 $ext      = $image->getClientOriginalExtension();
                 
-                $filename = 'PRO'.time().'.'.$ext;
+                $filename = 'PRO'.time().rand(100,999).'.'.$ext;
                 $target   = config('global.productPath');
                 $path     = $target.$filename;
                 Image::make($image->getRealPath())->save($path);
@@ -102,6 +103,7 @@ class ProductController extends Controller
                 $product->quantity       = $quantity;
                 $product->expire_on      = date("Y-m-d", strtotime($expire_on));
                 $product->description    = $description;
+                $product->specification  = $specifiaction;
                 $product->tag            = $tag;
         		$product->save();
                 
@@ -122,7 +124,7 @@ class ProductController extends Controller
                         $otherimage    = $value;
                         $ext      = $otherimage->getClientOriginalExtension();
                         
-                        $otherImagefilename = 'PRO'.time().'.'.$ext;
+                        $otherImagefilename = 'PRO'.time().rand(100,999).'.'.$ext;
                         $target   = config('global.productPath');
                         $path     = $target.$otherImagefilename;
                         Image::make($otherimage->getRealPath())->save($path);
@@ -136,14 +138,12 @@ class ProductController extends Controller
 
                 }
 
-
                 $addQuantityToStock              = new Stock;
                 $addQuantityToStock->pro_id_fk   = $last_insert_id;
                 $addQuantityToStock->quantity    = $quantity;
                 $addQuantityToStock->expire_on    = date("Y-m-d", strtotime($expire_on));
                 $addQuantityToStock->description = '';
                 $addQuantityToStock->save();
-
         		
 				Session::flash('message', 'Product create successfull.');
 		        
@@ -172,10 +172,10 @@ class ProductController extends Controller
         $live  = array('menu'=>'35','parent'=>'3');
         $pdID = Crypt::decrypt($id);
         $productInfo = Product::find($pdID);
-        $companyUsers = User::where('u_role','=','S')->where('status','!=','2')->get();
         $categories=Category::where('id','<>',1)->get();
 
-        return view('admin.editProduct', compact('live','productInfo','companyUsers','categories'));
+
+        return view('admin.editProduct', compact('live','productInfo','categories'));
         
     }
 
@@ -190,10 +190,11 @@ class ProductController extends Controller
         $cat_id_fk      = $data['cat_id_fk'];
         $original_price = $data['original_price'];
         $saling_price   = $data['saling_price'];
-        // $quantity       = $data['quantity'];
+        $quantity       = $data['quantity'];
         $tag            = $data['tag'];
         // $expire_on      = $data['expire_on'];
         $description    = $data['description'];
+        $specifiaction  = serialize($data['specification']);
 
         $rules = array(
             // 'file' => 'required|mimes:png,gif,jpeg,jpg',
@@ -202,10 +203,11 @@ class ProductController extends Controller
             'cat_id_fk'      => 'required',
             'original_price' => 'required',
             'saling_price'   => 'required',
-            // 'quantity'       => 'required',
+            'quantity'       => 'required',
             'tag'            => 'required',
             // 'expire_on'      => 'required',
-            'description'    => 'required'
+            'description'    => 'required',
+            'specification'    => 'required'
         );
         $validator = Validator::make(array(
             'name'           => $name,
@@ -213,10 +215,11 @@ class ProductController extends Controller
             'cat_id_fk'      => $cat_id_fk,
             'original_price' => $original_price,
             'saling_price'   => $saling_price,
-            // 'quantity'       => $quantity,
+            'quantity'       => $quantity,
             'tag'            => $tag,
             // 'expire_on'      => $expire_on,
-            'description'    => $description
+            'description'    => $description,
+            'specification'    => $specifiaction
         ), $rules);
         if ($validator->fails()) {
 
@@ -231,10 +234,12 @@ class ProductController extends Controller
                 'cat_id_fk'      => $cat_id_fk,
                 'original_price' => $original_price,
                 'saling_price'   => $saling_price,
-                // 'quantity'       => $quantity,
+                'quantity'       => $quantity,
                 'tag'            => $tag,
                 // 'expire_on'      => $expire_on,
-                'description'    => $description
+                'description'    => $description,
+                'specification'    => $specifiaction
+                
             ]);
 
             if (Input::hasfile('image')) {
@@ -242,7 +247,7 @@ class ProductController extends Controller
                 $image    = Input::file('image');
                 $ext      = $image->getClientOriginalExtension();
                 
-                $filename = 'PRO'.time().'.'.$ext;
+                $filename = 'PRO'.time().rand(100,999).'.'.$ext;
                 $target   = config('global.productPath');
                 $path     = $target.$filename;
                 Image::make($image->getRealPath())->save($path);
@@ -351,7 +356,7 @@ class ProductController extends Controller
                 
                 $ext      = $value->getClientOriginalExtension();
                 
-                $filename = 'PRO'.time().'.'.$ext;
+                $filename = 'PRO'.time().rand(100,999).'.'.$ext;
                 $target   = config('global.productPath');
                 $path     = $target.$filename;
                 Image::make($value->getRealPath())->save($path);
@@ -380,6 +385,16 @@ class ProductController extends Controller
             echo json_encode(array('status'=>0));
         }   
         
+    }
+
+    
+    public function getSpecification()
+    {
+        $data = Input::all();
+        $catspecification=Category::where('id','=',$data['cat_id'])->select('specifications')->first();
+        $specification= unserialize($catspecification->specifications);
+        echo json_encode($specification);
+
     }
 
         
