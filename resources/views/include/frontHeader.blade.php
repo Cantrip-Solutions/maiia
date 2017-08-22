@@ -46,13 +46,67 @@
             <div class="menu-section clears">
                 <div class="menu">
                     <span class="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></span>
-                    
                     <ul class="menu-content">
-                        <li><a href="#">New IN </a></li>
-                        <li><a href="#">Shop Looks</a></li>
+                    <?php $all_category_arr=CustomHelper::all_parent_category();
+                            //print_r($all_category_arr); //exit;
+
+                            foreach($all_category_arr as $key=> $value)
+                                {?>
+                                    <li><a href="#"><?php echo $value['cat_name'];?></a>
+                                        <div class="mega-wrap">
+                                            <div class="container">
+                                                <div class="mega-menu clears">
+                                                   
+                                                <ul>
+                                                    <li><h1>Title</h1></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                               </ul>
+                                               <ul>
+                                                    <li><h1>Title</h1></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                               </ul>
+                                               <ul>
+                                                    <li><h1>Title</h1></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                               </ul>
+                                               <ul>
+                                                    <li><h1>Title</h1></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                               </ul>
+                                               <ul>
+                                                    <li><h1>Title</h1></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                                    <li><a href="#">Shoes</a></li>
+                                               </ul>
+                                                    
+                                            </div>
+                                            </div>    
+                                        </div>
+                                    </li>
+                                <?php }?>
+                      <!--   <li><a href="#">Shop Looks</a></li>
                         <li><a href="#">Shop Activity </a></li>
                         <li><a href="#">Sale</a></li>
-                        <li><a href="#">Maiian Comunity</a></li>
+                        <li><a href="#">Maiian Comunity</a></li> -->
                     </ul>
                 </div>
                 <div class="search-sec clears">

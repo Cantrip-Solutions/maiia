@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,27 +14,22 @@
 //     return view('welcome');
 // });
 
-
- Route::get('/','HomeController@index');
- //Route::get('/miia-registration', 'HomeController@registrationView');
-//Route::get('/miia-login', 'HomeController@loginView');
-//Route::post('/submitRegistration', 'HomeController@submitRegistration');
-//Route::post('/submitLogin', 'HomeController@submitLogin');
-
-//Route::get('/get_all_category/{id}', 'HomeController@get_all_category');
-
-
-
+//-------------------------Front End-----------------------
+Route::get('/','HomeController@index');
+Route::get('/miia-registration', 'HomeController@registrationView');
+Route::get('/miia-login', 'HomeController@loginView');
+Route::post('/submitRegistration', 'HomeController@submitRegistration');
+Route::post('/submitLogin', 'HomeController@submitLogin');
+Route::get('/chartCategory', 'HomeController@chartCategory');
 Auth::routes();
-
 //Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
 
-    // Route::get('/logout','HomeController@logout');
-	
-	Route::get('/dashboard', 'DashboardController@gotoDashboard')->middleware('role:A|S');
+    Route::get('/logout','HomeController@logout');
+    Route::get('/my-account','HomeController@myaccount')->middleware('role:U');
 
+	Route::get('/dashboard', 'DashboardController@gotoDashboard')->middleware('role:A|S');
 
 	//-------------------------Admin Panel-----------------------
 	Route::group(['middleware' => 'role:A'], function () {
@@ -56,7 +50,6 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('/tab/company/create', 'CompanyController@createCompany');
 
 		// Category route
-		
 		Route::get('/tab/category', 'CategoryController@chartCategory');
 		Route::get('/tab/category/add',  ['uses'=>'CategoryController@addCategory', 'as'=> 'addCategory']);
 		Route::post('/tab/category/create', 'CategoryController@createCategory');
@@ -68,7 +61,6 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('category/delete', 'CategoryController@deleteCategory');
 
 		// Product route
-		 
 		Route::get('/tab/product', 'ProductController@chartProduct');
 		Route::get('/tab/product/add',  ['uses'=>'ProductController@addProduct', 'as'=> 'addProduct']);
 		Route::post('/createProduct', 'ProductController@createProduct');
@@ -89,10 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/tab/specification/add',  ['uses'=>'SpecificationController@addSpecification', 'as'=> 'addSpecification']);
 		Route::post('/getSpecification', 'ProductController@getSpecification');
 		
-
-
 		//Discount product route
-		
 		Route::get('/tab/offers/discount', 'OffersController@productDiscount');
 		Route::get('/tab/offers/coupons', 'OffersController@chartCoupons');
 		Route::get('/tab/offers/coupons/add', ['uses'=>'OffersController@addCoupons','as'=> 'addCoupons']);
@@ -103,10 +92,8 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/tab/transactions', 'OrdersController@chartTransactions');
 
 		// ------------------------Settings---------------------------
-
 		// Menu Management
 		Route::get('/settings/menuManagement', 'SettingsController@menuManagement');
-
 
 	});
 
@@ -118,6 +105,4 @@ Route::group(['middleware' => 'auth'], function () {
 	// Change Password for all
 	Route::get('passwordChange', 'SettingsController@passwordChange');
 	Route::post('updatePassword', 'SettingsController@updatePassword');
-
 });
-

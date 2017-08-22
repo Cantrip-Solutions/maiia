@@ -1,5 +1,4 @@
 @extends('layouts.siteMain')
-
 @section('content')
   <section class="login-wrap">  
        <div class="login-inner">
@@ -37,6 +36,11 @@
 
                         <div class="field-row">
                          {!! Form::text('mobileno', '',array('placeholder'=>'Mobile Number')) !!}
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('mobileno') }}</strong>
+                                    </span>
+                                @endif
                        </div>
                         <div class="field-row">
                             <div class="gend">
