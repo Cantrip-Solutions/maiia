@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=1">
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 {!!HTML::style('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')!!}
 {!!HTML::style('css/site/countrySelect.css')!!}
 {!!HTML::style('css/site/ion.rangeSlider.css')!!}
@@ -23,6 +23,11 @@
 
 {!!HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')!!}
 {!!HTML::script('js/site/slick.js')!!}
+<script>
+    window.Laravel = {!! json_encode([
+        'csrfToken' => csrf_token(),
+    ]) !!};
+</script>
 <script>
     $(document).ready(function(){
              
@@ -69,7 +74,8 @@ $('.n-prod-slide').slick({
 <title>{{config('global.siteTitle')}}</title>
 </head>
 <body>
-<div class="total-content" style="display:block">    
+<div class="total-content" id="main" style="display:block">   
+<span class="open-btn" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; </span> 
 <div class="body-content">
 
   @include('include.frontHeader')
@@ -77,93 +83,56 @@ $('.n-prod-slide').slick({
   @yield('content')
 
   </div>
-    <footer class="footer-wrap">
-    <div class="footer-top">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-2 col-sm-2">
-                    <div class="footer-top-block">
-                        <h2>Informations</h2>
-                            <ul>
-                                <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Home</a></li>
-                                <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Shop</a></li>
-                                <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Shipping / Returns
-                                </a></li>
-                                <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Faq</a></li>
-                            </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-2">
-                    <div class="footer-top-block">
-                        <h2>Customer menu</h2>
-                        <ul>
-                            <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Terms</a></li>
-                            <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Customer Support</a></li>
-                            <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Gift Cards
-                            </a></li>
-                            <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Privacy Policy</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-2 col-sm-3">
-                    <div class="footer-top-block">
-                    <h2>Company</h2>
-                        <ul>
-                            <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Corporate Contact</a></li>
-                            <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Careers</a></li>
-                            <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Retailers
-                            </a></li>
-                            <li><a href="#"><i class="fa fa-caret-right" aria-hidden="true"></i> Our Story</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-4">
-                
-                    <div class="footer-top-block">
-                        <h2>SIGN UP FOR EMAIL</h2>
-                        
-                        <div class="sign-up">
-                        <p>Sign up for Sweaty Betty emails and receive 10% off your first online order.</p>
-
-                        <div class="sign-wrap">
-                            <input type="text" value="" name="" placeholder="Enter your email address">
-                            <button><i class="fa fa-paper-plane" aria-hidden="true"></i>
-                        </button>
-                        </div>    
-                                                
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="footer-btm clears">
-        <div class="container">
-            <span>© 2017 Maiian. All rights reserved.</span>
-        
-            <div class="footer-media">
-                <ul>
-                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                    <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                    <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-                </ul>
-            </div>
-            
-        </div>
-    </div>
-</footer> 
+   @include('include.frontFooter')
 
 </div>
 
-
+<script type="text/javascript">
+ var base_url = "{{url('/')}}";
+ var token="{{ csrf_token() }}";
+</script>
 {!!HTML::script('js/site/bootstrap.min.js')!!}
 {!!HTML::script('js/site/materialize.min.js')!!}
+{!!HTML::script('js/site/cloud-zoom.js')!!}
 {!!HTML::script('js/site/jquery.dd.js')!!}
 {!!HTML::script('js/site/ion.rangeSlider.js')!!}
-{!!HTML::script('js/site/custom.js')!!}
+{!!HTML::script('https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js')!!}
 
+{!!HTML::script('js/site/siteScript.js')!!}
+{!!HTML::script('js/site/siteCustom.js')!!}
 <!--<script src="js/cloud-zoom.js"></script>-->
 <!--<script src="source/jquery.fancybox.js"></script> -->
 </body>
 </html>
+
+<script>
+  $('#plus').click(function(){
+    var numric = $('#num').val();
+    if((parseInt(numric) == 20)){
+        return false;
+    } else{
+       var result = parseInt(numric)+1;
+       $('#num').val(result);
+    } 
+})
+        
+  $('#minus').click(function(){
+      var numric = $('#num').val();
+      if((parseInt(numric) == 1)){
+          return false;
+      } else{
+          var result = parseInt(numric)-1;
+           $('#num').val(result);
+      }
+  });
+     
+  $(document).ready(function(){ 
+    $('.tabs li').click(function(){
+      var index=$(this).index();
+      $('.tabs li').removeClass('active'); 
+      $(this).addClass('active');
+      $('.tab-content').removeClass('active');
+      $('.tab-content:eq('+index+')').addClass('active');
+      });
+  });
+</script>

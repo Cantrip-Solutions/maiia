@@ -1,14 +1,18 @@
 <?php
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use App\User;
 use \App\Model\UserInfo;
 use \App\Model\Category;
+use App\Model\Product;
+use \App\Model\ProductImage;
+use \App\Model\Banner;
 use Validator;
 use Auth;
 use Hash;
 use Session;
-use Input;
+use Cookie;
 
 class HomeController extends Controller
 {
@@ -29,7 +33,26 @@ class HomeController extends Controller
     */
   public function index()
    {
-       return view('site/home');
+        $get_featured_product=Product::join('product_images' , 'product_images.pro_id_fk' , '=' , 'products.id')
+            ->where('product_images.default_image', '=', '1')
+            ->where('featured', '=', '1')
+            ->select('products.id as product_id','products.name as product_name','products.original_price as product_original_price','products.saling_price as product_saling_price','products.quantity as product_quantity','products.description as product_description','product_images.id as product_images_id','product_images.image as product_image','product_images.default_image as product_default_images')
+            ->limit(3)
+            ->get();
+
+        $get_new_in_product=Product::join('product_images' , 'product_images.pro_id_fk' , '=' , 'products.id')
+            ->where('product_images.default_image', '=', '1')
+            ->where('products.cat_id_fk', '!=', '1')
+            ->select('products.id as product_id','products.name as product_name','products.original_price as product_original_price','products.saling_price as product_saling_price','products.quantity as product_quantity','products.description as product_description','product_images.id as product_images_id','product_images.image as product_image','product_images.default_image as product_default_images')
+            ->orderBy('products.id', 'DESC')
+            ->limit(10)
+            ->get();
+
+        $get_banner_details=Banner::select('*')
+          ->where('banners.status', '=', '1')
+          ->get();
+                    
+          return view('site/home',array('banner_details'=>$get_banner_details,'featured_product'=>$get_featured_product,'new_in_product'=>$get_new_in_product));
    }
 
   public function registrationView()
@@ -164,46 +187,14 @@ class HomeController extends Controller
       return redirect('/');
    }
 
-   public function myaccount()
+  public function myaccount()
    {
       return view('site/account');
    }
 
-
-   public static function chartCategory() {
-      $category = array();
-      $new_cat=array();
-      $categories=Category::where('id', '!=', 1)
-      ->where('parent_cat_id', '=', 0)
-      ->get();
-      //echo '<pre>'; print_r($categories); exit;
-
-      foreach ($categories as $key => $value) {
-        $new_cat[$value['cat_name']]=$value;
-        $parent_id=$value['id'];
-
-        $categories=self::categoryChild($parent_id);
-        array_push($new_cat, $categories);
-      }
-      echo '<pre>'; print_r($new_cat);
-    }
-
-    public static function categoryChild($parent_id) {
-        $get_all_child=Category::where('parent_cat_id', '=', $parent_id)
-        ->get();
-
-        $count=$get_all_child->count();
-        $children = array();
-
-        if($count > 0) {
-          foreach ($get_all_child as $key => $value) {
-              //$children[$value->cat_name]=array('name'=> $value->cat_name);
-              $children[$value->id][$value->cat_name] = self::categoryChild($value['id']);
-            }
-            //echo '<pre>'; print_r($children); //exit;
-        }
-         //echo '<pre>'; print_r($children); //exit;
-        return $children;
-    }
+  public function contact_us()
+   {
+      return view('site/contact');
+   }
 
 }

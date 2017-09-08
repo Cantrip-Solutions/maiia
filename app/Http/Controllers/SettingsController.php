@@ -77,4 +77,5 @@ class SettingsController extends Controller
         return view('admin.menuManagement', compact('live'));
 
     }
+
 }

@@ -133,6 +133,13 @@
                                 @endif
                             </div>
                         </div>
+                       
+                       <div class="form-group">
+                            <label for="image" class="col-sm-2 control-label">Featured:</label>
+                            <div class="col-sm-10">
+                              {{ Form::checkbox('is_featured', 1, false) }}
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label for="tag" class="col-sm-2 control-label">Tag *:</label>

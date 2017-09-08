@@ -20,7 +20,22 @@ Route::get('/miia-registration', 'HomeController@registrationView');
 Route::get('/miia-login', 'HomeController@loginView');
 Route::post('/submitRegistration', 'HomeController@submitRegistration');
 Route::post('/submitLogin', 'HomeController@submitLogin');
-Route::get('/chartCategory', 'HomeController@chartCategory');
+/*Route::get('/chartCategory', 'HomeController@chartCategory');*/
+Route::get('/product/{slug}/{id}', 'SiteproductController@productList');
+Route::get('/product-details/{slug}/{id}', 'SiteproductController@productDetails');
+Route::post('/product/sortingListing', 'SiteproductController@productSortingList');
+Route::post('/product/categoryCheck', 'SiteproductController@categoryCheck');
+Route::post('/product/priceCheck', 'SiteproductController@priceCheck');
+Route::get('/contact-us', 'HomeController@contact_us');
+Route::get('/cart', 'CartController@cart');
+Route::post('/add_cart', 'CartController@add_cart');
+Route::post('/remove_cart_items', 'CartController@remove_cart_items');
+Route::post('/submit_cart_info', 'CartController@submit_cart_info');
+Route::get('/cookie', 'CartController@cookie');
+Route::post('/product/show_more', 'SiteproductController@show_more');
+Route::post('/product/cart_update', 'CartController@cart_update');
+Route::get('/checkout', 'CartController@checkout');
+
 Auth::routes();
 //Route::get('/home', 'HomeController@index')->name('home');
 
@@ -30,6 +45,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/my-account','HomeController@myaccount')->middleware('role:U');
 
 	Route::get('/dashboard', 'DashboardController@gotoDashboard')->middleware('role:A|S');
+
+	//-----------PAYPAL----------------//
+	// route for view/blade file
+	Route::get('paywithpaypal', array('as' => 'paywithpaypal','uses' => 'PaypalController@payWithPaypal',));
+	// route for post request
+	Route::post('paypal', array('as' => 'paypal','uses' => 'PaypalController@postPaymentWithpaypal',));
+	// route for check status responce
+	Route::get('paypal', array('as' => 'status','uses' => 'PaypalController@getPaymentStatus',));
+	//-----------END PAYPAL-------------//
 
 	//-------------------------Admin Panel-----------------------
 	Route::group(['middleware' => 'role:A'], function () {
@@ -94,6 +118,12 @@ Route::group(['middleware' => 'auth'], function () {
 		// ------------------------Settings---------------------------
 		// Menu Management
 		Route::get('/settings/menuManagement', 'SettingsController@menuManagement');
+
+		// Banner Management
+		Route::get('/settings/bannerManagement', 'BannerController@chartBanner');
+		Route::get('/settings/bannerManagement/add',  ['uses'=>'BannerController@addBanner', 'as'=> 'addBanner']);
+		Route::post('/settings/createBanner', 'BannerController@createBanner');
+        Route::get('/settings/bannerManagement/delete/{id}', 'BannerController@deleteBanner');
 
 	});
 

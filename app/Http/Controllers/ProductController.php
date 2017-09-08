@@ -51,6 +51,7 @@ class ProductController extends Controller
         $tag            = $data['tag'];
         $expire_on      = $data['expire_on'];
         $description    = $data['description'];
+        $is_featured    = $data['is_featured'];
         $specifiaction  = serialize($data['specification']);
 
 		$rules = array(
@@ -105,6 +106,7 @@ class ProductController extends Controller
                 $product->description    = $description;
                 $product->specification  = $specifiaction;
                 $product->tag            = $tag;
+                $product->featured       = $is_featured;
         		$product->save();
                 
         		$last_insert_id = $product->id;

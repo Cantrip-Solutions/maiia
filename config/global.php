@@ -12,5 +12,6 @@ return [
 	'categoryPath'  =>	'images/categoryImage/',
 	'productPath'  =>	'images/productImage/',
 	'siteImages'	=>	'images/siteImages/',
+	'bannerPath'  =>	'images/bannerImage/',
 
 ];
