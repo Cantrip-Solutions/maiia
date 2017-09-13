@@ -1,6 +1,9 @@
 <?php
 namespace App\Helpers;
 use \App\Model\Category;
+use App\Model\Product;
+use \App\Model\ProductImage;
+use \App\Model\Bucket;
 use DB;
 use Hash;
 use Auth;
@@ -53,18 +56,29 @@ class CustomHelper {
     }
 
     public static function count_cart_items() {
-      if(isset($_COOKIE['cartinfo']))
+
+      if (Auth::check())
         {
-          $cartarray = unserialize($_COOKIE['cartinfo']);
-          if(count($cartarray) > 0)
-            {
-              $count_cart=count($cartarray);
-            }
+          $user_data = Auth::User();
+          $count_cart=Bucket::where('u_id_fk', '=', $user_data->id)
+                    ->count();
         }
       else
         {
-          $count_cart=0;
+          if(isset($_COOKIE['cartinfo']))
+              {
+                $cartarray = unserialize($_COOKIE['cartinfo']);
+                if(count($cartarray) > 0)
+                  {
+                    $count_cart=count($cartarray);
+                  }
+              }
+            else
+              {
+                $count_cart=0;
+              }
         }
+          
         return $count_cart;
     }
 

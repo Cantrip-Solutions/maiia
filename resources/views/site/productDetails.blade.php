@@ -1,6 +1,6 @@
 @extends('layouts.siteMain')
 @section('content')
-<section class="banner-inner-wrap">
+<!-- <section class="banner-inner-wrap">
   <figure>
     {!!HTML::image(config('global.siteImages')."prod-dt-banner.jpg")!!}
   </figure>   
@@ -17,7 +17,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+</section> -->
 
         <div class="product-dt-holder">
             <section class="prod-top-wrap">
@@ -26,14 +26,24 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <div class="prod-top-dt-left">
-
                                    <div class="zoom-wrap">
                                        <div class="zoom-small-image">
+
+                                        <a @if (Auth::guest()) href="{{url('/miia-login')}}" @else href="javascript:void(0)" class="addwishlist" data-id="<?php echo Crypt::encrypt($product_details->id);?>" data-status="{{$wishlisted}}" @endif >
+
+                                          <div class="wish_wrap">
+                                            <i class="fa fa-heart" <?php if($wishlisted == 0){?> style="color: #ccc;" <?php }else{?> style="color: red;" <?php }?> aria-hidden="true"></i>
+                                          </div>
+                                        </a>
+
+                                        <div id="wishlist_msg"></div>
+
                                            <a href="{{ URL::to('/').'/'.config('global.productPath').'/'.$images[0]->image }}" class = 'cloud-zoom' id='zoom1' rel="adjustX:10, adjustY:-4">{!!HTML::image(config('global.productPath').$images[0]->image)!!}
                                            </a>
                                        </div>
                                        <div class="zoom-desc">
                                            <ul>
+                                           @php unset($images[0]) @endphp
                                               @foreach($images as $key => $img_value)
                                                 <li class="thumbAc">
                                                    <a href="{{ URL::to('/').'/'.config('global.productPath').'/'.$img_value->image }}" class='cloud-zoom-gallery' title='' rel="useZoom: 'zoom1', smallImage: '{{ URL::to('/').'/'.config('global.productPath').'/'.$img_value->image }}' ">{!!HTML::image(config('global.productPath').$img_value->image,'',array('class'=>'zoom-tiny-image','width'=>'65', 'alt' => 'Thumbnail 1'))!!}</a>
@@ -77,7 +87,8 @@
                                         <input id="num" type="text" value="1" placeholder="0">
                                         <button id="plus"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                     </div>
-                                    <input type="hidden" name="pro_id" id="pro_id" value="{{$product_details->id}}" />
+                                    @php $parameter= Crypt::encrypt($product_details->id) @endphp
+                                    <input type="hidden" name="pro_id" id="pro_id" value="{{$parameter}}" />
                                     <a href="javascript:void(0)" class="addcard">Add To Cart</a>
                                     <div class="cart_loading"></div>
                                     <div id="cart_success_msg"></div>
@@ -129,13 +140,15 @@
                           <div class="new-prod">
                               <div class="prod">
                                   <figure>{!!HTML::image(config('global.productPath').$values->product_image)!!}</figure>
+                                    @php $parameter= Crypt::encrypt($values['product_id']) @endphp
                                       <div class="view-sec">
                                           <ul class="view-icon">
-                                            <li><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-refresh" aria-hidden="true"></i></a></li>
+                                            <li><a href="javascript:void(0)" class="add_to_cart" value="{{$parameter}}" p="{{$values['product_id']}}"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
+                                            <!-- <li><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-refresh" aria-hidden="true"></i></a></li> -->
                                           </ul>
-                                          @php $parameter= Crypt::encrypt($values['product_id']) @endphp
+                                          <div id="cart_loading{{$values['product_id']}}"></div>
+                                          <div id="cart_success_msg{{$values['product_id']}}"></div>
                                           <a href="{!! URL::to('product-details').'/'.str_slug($values['product_name'], '-').'/'.$parameter !!}" class="quick-view fancybox">
                                             <i class="fa fa-search" aria-hidden="true"></i>
                                             Quick View

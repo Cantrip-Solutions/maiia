@@ -87,14 +87,14 @@
                   <div class="new-prod">
                     <div class="prod">
                       <figure>{!!HTML::image(config('global.productPath').$cvalue->product_image)!!}</figure>
-
+                      @php $parameter=Crypt::encrypt($cvalue['product_id']) @endphp
                       <div class="view-sec">
                         <ul class="view-icon">
-                          <li><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
-                          <li><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
-                          <li><a href="#"><i class="fa fa-refresh" aria-hidden="true"></i></a></li>
+                          <li><a href="javascript:void(0)" class="add_to_cart" value="{{$parameter}}" p="{{$cvalue['product_id']}}"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
+                          <!-- <li><a href="#"><i class="fa fa-refresh" aria-hidden="true"></i></a></li> -->
                         </ul>
-                        @php $parameter= Crypt::encrypt($cvalue['product_id']) @endphp
+                        <div id="cart_loading{{$cvalue['product_id']}}"></div>
+                        <div id="cart_success_msg{{$cvalue['product_id']}}"></div>
                         <a href="{!! URL::to('product-details').'/'.str_slug($cvalue['product_name'], '-').'/'.$parameter !!}" class="quick-view fancybox">
                           <i class="fa fa-search" aria-hidden="true"></i>
                           Quick View

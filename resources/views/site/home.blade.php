@@ -55,37 +55,37 @@
             <h1>New In</h1>
             <div class="new-prod-block">
                 <ul class="n-prod-slide">
-                @foreach($new_in_product as $new_key => $new_value)
-                    <li>
-                        <div class="new-prod">
-                            <div class="prod">
-                                <figure>{!!HTML::image(config('global.productPath').$new_value->product_image)!!}</figure>
-                                <div class="view-sec">
-                                    <ul class="view-icon">
-                                        <li><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-refresh" aria-hidden="true"></i></a></li>
-                                    </ul>
-                                    @php $new_parameter= Crypt::encrypt($new_value['product_id']) @endphp
-                                    <a href="{!! URL::to('product-details').'/'.str_slug($new_value['product_name'], '-').'/'.$new_parameter !!}" class="quick-view fancybox">
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                        Quick View
-                                    </a>
-                            </div>
-                        </div>
-                        <div class="btm">
-                            <h2>{{$new_value->product_name}}</h2>
-                            <div class="price">
-                                <span>$ {{$new_value->product_original_price}}</span>
-                                <span>$ {{$new_value->product_saling_price}}</span>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
+	                @foreach($new_in_product as $new_key => $new_value)
+	                    <li>
+	                        <div class="new-prod">
+	                            <div class="prod">
+	                                <figure>{!!HTML::image(config('global.productPath').$new_value->product_image)!!}</figure>
+	                                    @php $new_parameter=Crypt::encrypt($new_value['product_id']) @endphp
+	                                <div class="view-sec">
+	                                    <ul class="view-icon">
+	                                        <li><a href="javascript:void(0)" class="add_to_cart" value="{{$new_parameter}}" p="{{$new_value['product_id']}}"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
+	                                    </ul>
+	                                    <div id="cart_loading{{$new_value['product_id']}}"></div>
+	                        			<div id="cart_success_msg{{$new_value['product_id']}}"></div>
+	                                    <a href="{!! URL::to('product-details').'/'.str_slug($new_value['product_name'], '-').'/'.$new_parameter !!}" class="quick-view fancybox">
+	                                        <i class="fa fa-search" aria-hidden="true"></i>
+	                                        Quick View
+	                                    </a>
+	                            	</div>
+	                        	</div>
+		                        <div class="btm">
+		                            <h2>{{$new_value->product_name}}</h2>
+		                            <div class="price">
+		                                <span>$ {{$new_value->product_original_price}}</span>
+		                                <span>$ {{$new_value->product_saling_price}}</span>
+		                            </div>
+		                        </div>
+	                    	</div>
+	                	</li>
+	                @endforeach
+            	</ul>
+        	</div>
+    	</div>
 
     <!-- <div class="course-sec">
         <h1>Yoga Free Course!</h1>

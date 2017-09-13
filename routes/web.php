@@ -40,11 +40,10 @@ Auth::routes();
 //Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function () {
-
     Route::get('/logout','HomeController@logout');
-    Route::get('/my-account','HomeController@myaccount')->middleware('role:U');
-
-	Route::get('/dashboard', 'DashboardController@gotoDashboard')->middleware('role:A|S');
+    Route::get('/my-account','SiteproductController@myaccount')->middleware('role:U');
+    Route::get('/dashboard', 'DashboardController@gotoDashboard')->middleware('role:A|S');
+	Route::post('/add_to_wishlist', 'SiteproductController@add_to_wishlist')->middleware('role:U');
 
 	//-----------PAYPAL----------------//
 	// route for view/blade file
@@ -124,7 +123,8 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('/settings/bannerManagement/add',  ['uses'=>'BannerController@addBanner', 'as'=> 'addBanner']);
 		Route::post('/settings/createBanner', 'BannerController@createBanner');
         Route::get('/settings/bannerManagement/delete/{id}', 'BannerController@deleteBanner');
-
+        Route::get('/settings/bannerManagement/edit/{name}/{id}', 'BannerController@editBanner');
+        Route::post('/settings/bannerManagement/update', 'BannerController@updateBanner');
 	});
 
 	//-------------------------Vendor Panel-----------------------

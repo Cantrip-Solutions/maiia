@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width">
 <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700" rel="stylesheet"> 
 {!!HTML::style('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')!!}
 {!!HTML::style('css/site/countrySelect.css')!!}
 {!!HTML::style('css/site/ion.rangeSlider.css')!!}

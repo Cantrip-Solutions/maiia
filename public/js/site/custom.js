@@ -1,6 +1,9 @@
 // JavaScript Document
 
 
+
+
+
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
@@ -136,7 +139,7 @@ $(document).ready(function() {
 
          
 $('.header-right-toggle').click(function(){
-    $('.header-right-tog-content').slideToggle(150);
+    $('.login-toggle-content').slideToggle(150);
 });     
 
 
@@ -192,6 +195,9 @@ $('#parentVerticalTab').easyResponsiveTabs({
     },
     minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
   });
+    
+    
+
          
          
  /* $('.fancybox').fancybox();  */     

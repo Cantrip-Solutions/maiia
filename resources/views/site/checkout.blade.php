@@ -49,7 +49,7 @@
                         </div>
                         
                         <div class="form-group">
-                          <label>Apartment / Suite</label>
+                          <label>Shipping Address</label>
                           @if (Auth::check())
                               {!! Form::text('address2',$user_info->address2,array('class'=>'form-control','placeholder'=>'Apt, Suite, Bldg, (optional)')) !!}
                           @else
@@ -132,6 +132,18 @@
                               @endif
                         </div>
 
+                        @if (!Auth::check())
+                          <div class="form-group">
+                              <label>Password</label>
+                          {!! Form::password('password',array('class'=>'form-control','placeholder'=>'Your Password')) !!}
+                                    @if ($errors->has('password'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('password') }}</strong>
+                                        </span>
+                                    @endif
+                          </div>
+                        @endif
+
                         <!-- <h3>Needed for delivery purposes</h3>
                         <div class="shipping-checkbox">
                           <input type="checkbox" value="None" id="shipping-checkbox" name="check" checked />
@@ -168,18 +180,12 @@
                               </span>
                               @endif
                         </div>
-
                         <h4>View our <span>Privacy Policy</span></h4>
                       </div>
+                      <input class="btn btn-warning" type="submit" name="" value="Submit">
+                      {{Form::close()}}
                     </div>
-                    <input class="btn btn-warning" type="submit" name="" value="Submit">
-                    {{Form::close()}}
-
-
                   </div>
-
-
-
 
                   <div class="billing-form">
                     <h1>Billing Address</h1>
@@ -394,12 +400,7 @@
                     <tbody>
                       <tr>
                         <td>Order Total</td>
-                        @php $final_price=0; @endphp
-                        @foreach($cart_items as $key => $value)
-                          @php $price=$value[0]->product_saling_price*$value[0]->quantity;
-                            $final_price=$final_price+$price;
-                          @endphp
-                        @endforeach
+                        
 
                         <td>$ {{$final_price}}</td>
                       </tr>

@@ -49,7 +49,7 @@
                         <a href="#" class="recover-pass">Recover password </a>
                         
                         <div class="log-btm-right">
-                            <span>New to Myntra?</span>
+                            <span>New to Maiia?</span>
                             <a href="{{url('/miia-registration')}}">Create</a>
                         </div>
                     </div>

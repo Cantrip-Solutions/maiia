@@ -187,11 +187,6 @@ class HomeController extends Controller
       return redirect('/');
    }
 
-  public function myaccount()
-   {
-      return view('site/account');
-   }
-
   public function contact_us()
    {
       return view('site/contact');

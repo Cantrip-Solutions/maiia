@@ -29,12 +29,11 @@
                    </div>
                    @php $final_price=0; @endphp
                    @foreach($cart_items as $key => $value)
-
                    <div class="item-box">
                     <div class="row">
                         <div class="col-lg-2 col-sm-2 col-xs-3 item-prod">
                             <item>
-                                {!!HTML::image(config('global.productPath').$value[0]->product_image)!!}
+                                {!!HTML::image(config('global.productPath').$value['product_image'])!!}
                             </item>
                         </div>
                         <div class="col-lg-10 col-sm-10 col-xs-9 item-right">
@@ -42,19 +41,22 @@
                             <div class="item-mid">    
                                 <div class="row">   
                                     <div class="col-lg-8 col-sm-8">
-                                        <h1>{{$value[0]->product_name}}</h1>
+                                        <h1>{{$value['product_name']}}</h1>
                                         <div class="size-part">
-                                            <!-- <part>
-                                                <label>Size:</label>
-                                                <span>L</span>
-                                            </part> -->
+                                            <part>
+                                                <label>In Stock:</label>
+                                                <span>{{$value['product_quantity']}}</span>
+                                            </part>
+                                        </div>
+                                        <div class="size-part">
                                             <part>
                                                 <label>Qty:</label>
                                                 <div class="qty-sec ord_qnt">
                                                     <button class="cart_item_remove" data="{{$key}}" value=""><i class="fa fa-minus" aria-hidden="true"></i></button>
-                                                    <input id="num{{$key}}" type="text" value="{{$value[0]->quantity}}" placeholder="0">
+                                                    <input id="num{{$key}}" type="text" value="{{$value['quantity']}}" placeholder="0">
                                                     <button class="cart_item_add" data="{{$key}}" value=""><i class="fa fa-plus" aria-hidden="true"></i></button>
-                                                    <div class="cart_update_loader"></div>
+                                                    <div id="cart_update_loader{{$key}}"></div>
+                                                    <div id="cart_update_msg{{$key}}"></div>
                                                 </div>
                                             </part>
                                         </div>
@@ -84,7 +86,7 @@
                                     </div>
                                     <div class="col-lg-4 col-sm-4 ">
                                         <div class="price-sec">
-                                            @php $price=$value[0]->product_saling_price*$value[0]->quantity; @endphp
+                                            @php $price=$value['product_saling_price']*$value['quantity']; @endphp
                                             <strong>$ {{$price}}</strong>
                                        <!--  <off-sec>
                                             <span>(50% OFF)</span>
@@ -97,12 +99,12 @@
 
                         <div class="ed-rem">
                             <a href="javascript:void(0);" class="remove_cart_item" data="{{$key}}">Remove</a>
-                            <div class="cart_loading"></div>
+                            <div id="cart_loading{{$key}}"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            @php $price=$value[0]->product_saling_price*$value[0]->quantity;
+            @php $price=$value['product_saling_price']*$value['quantity'];
             $final_price=$final_price+$price;
             @endphp
             @endforeach

@@ -273,7 +273,7 @@
                     'display': 'block'
                 });
                 if ($(this).parent().attr('id') != 'wrap') {
-                    $(this).wrap('<div id="wrap" style="top:0px;z-index:9999;position:relative;"></div>')
+                    $(this).wrap('<div id="wrap" style="top:0px;z-index:9;position:relative;"></div>')
                 }
                 opts = $.extend({}, $.fn.CloudZoom.defaults, d);
                 opts = $.extend({}, opts, c);

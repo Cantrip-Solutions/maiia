@@ -2,7 +2,8 @@ $(document).ready(function(){
 	$('.addcard').click(function(){
 		var quantity=$('#num').val();
 		var pro_id=$('#pro_id').val();
-	$.ajax({
+
+		$.ajax({
         	url : base_url+'/add_cart',
         	type: "POST",
         	data:{'quantity':quantity,'pro_id':pro_id, _token: token},
@@ -18,6 +19,12 @@ $(document).ready(function(){
 	            		$('#count_cart').html(result.cart_count);
 	            		$('.alert').delay(3000).fadeOut(400);
 	            	}
+	            else if(result.status == 2)
+		            {
+		            	$(".cart_loading").html('');
+	            		$("#cart_success_msg").html('<div class="alert alert-warning">Your selected amount is greater than current available stock. <i class="fa fa-shopping-cart"></i> </div>');
+	            		$('.alert').delay(4000).fadeOut(400);
+		            }
             	else
 	            	{
 	            		$(".cart_loading").html('');
@@ -27,7 +34,46 @@ $(document).ready(function(){
         	}
     	});
 	});
-	
+
+	//add to cart from product page(one single item)
+ 	$('body').on('click','.add_to_cart',function(){
+		var quantity=1;
+		var pro_id = $(this).attr('value');
+		var decr_pro_id = $(this).attr('p');
+
+		$.ajax({
+        	url : base_url+'/add_cart',
+        	type: "POST",
+        	data:{'quantity':quantity,'pro_id':pro_id, _token: token},
+			beforeSend: function(){
+				$("#cart_loading"+decr_pro_id).html('<i class="fa fa-spinner fa-pulse"></i> Please wait ...');
+			},
+        	success:function(data){
+        		//console.log(data);
+        		var result=jQuery.parseJSON(data);
+            	if(result.status == 1)
+	            	{
+	            		$("#cart_loading"+decr_pro_id).html('');
+	            		$("#cart_success_msg"+decr_pro_id).html('<div class="alert alert-success">Item Added to Cart <i class="fa fa-shopping-cart"></i> </div>');
+	            		$('#count_cart').html(result.cart_count);
+	            		$('.alert').delay(3000).fadeOut(400);
+	            	}
+	            else if(result.status == 2)
+		            {
+		            	$(".cart_loading"+decr_pro_id).html('');
+	            		$("#cart_success_msg"+decr_pro_id).html('<div class="alert alert-warning">You Must select lower or equal value of current available stock. <i class="fa fa-shopping-cart"></i> </div>');
+	            		$('.alert').delay(4000).fadeOut(400);
+		            }
+            	else
+	            	{
+	            		$(".cart_loading"+decr_pro_id).html('');
+	            		$("#cart_success_msg"+decr_pro_id).html('<div class="alert alert-danger">Error Occured. Please try again later!!</div>');
+	            		$('.alert').delay(3000).fadeOut(400);
+	            	}
+        	}
+    	});
+	});
+
 	//remove cart product with all its item
 	$('.remove_cart_item').click(function(){
 		var cart_key_id=$(this).attr('data');
@@ -36,7 +82,7 @@ $(document).ready(function(){
         	type: "POST",
         	data:{'cart_key_id':cart_key_id, _token: token},
         	beforeSend: function(){
-				$('.cart_loading').html('<i class="fa fa-spinner fa-pulse"></i> Please wait ...');
+				$('#cart_loading'+cart_key_id).html('<i class="fa fa-spinner fa-pulse"></i> Please wait ...');
 			},
         	success:function(data){
         		var result=jQuery.parseJSON(data);
@@ -66,7 +112,7 @@ $(document).ready(function(){
 			type: "POST",
 			data:{'updated_quantity':updated_quantity,'cart_key':cart_key, _token: token},
 			beforeSend: function() {
-				$('.cart_update_loader').html('<i class="fa fa-spinner fa-pulse"></i> Please wait ...');
+				$('#cart_update_loader'+cart_key).html('<i class="fa fa-spinner fa-pulse"></i> Please wait ...');
 			},
 			success:function(data){
 		    	if(data.status == 1){
@@ -95,12 +141,45 @@ $(document).ready(function(){
 			type: "POST",
 			data:{'updated_quantity':updated_quantity,'cart_key':cart_key, _token: token},
 			beforeSend: function() {
-				$('.cart_update_loader').html('<i class="fa fa-spinner fa-pulse"></i> Please wait ...');
+				$('#cart_update_loader'+cart_key).html('<i class="fa fa-spinner fa-pulse"></i> Please wait ...');
 			},
 			success:function(data){
-		    	if(data.status == 1){
+				//console.log(data);
+		    	if(data.status==1)
+			    	{
+			    		location.reload();
+			    	}
+		    	else if (data.status==0)
+			    	{
+			    		$('#cart_update_msg'+cart_key).html('<div class="alert alert-warning">You Must select lower or equal value of current available stock. <i class="fa fa-shopping-cart"></i> </div>');
+			    		$('.alert').delay(4000).fadeOut(400);
+			    	}
+		    	else
+			    	{
+			    		location.reload();
+			    	}
+			}
+		});
+	});
+	
+	//add to wishlist
+	$('.addwishlist').click(function(){
+		var pro_id=$(this).attr('data-id');
+		var status=$(this).attr('data-status');
+
+		$.ajax({
+			url : base_url+'/add_to_wishlist',
+			type: "POST",
+			data:{'pro_id':pro_id, 'status':status, _token: token},
+			beforeSend: function() {
+				//$('#cart_update_loader'+cart_key).html('<i class="fa fa-spinner fa-pulse"></i> Please wait ...');
+			},
+			success:function(data){
+		    	if(data==1){
+		    		//$('#wishlist_msg').html('<div class="alert alert-success">Item added to wishlist</div>');
 		    		location.reload();
-		    	}else{
+		    	}else if(data==2){
+		    		//$('#wishlist_msg').html('<div class="alert alert-success">Item removed from wishlist</div>');
 		    		location.reload();
 		    	}
 			}

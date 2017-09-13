@@ -18,7 +18,6 @@
                 </div>
             </div>
         </div>
-
     </section>
 
  <section class="account-wrap">
@@ -35,25 +34,32 @@
                     </div>
                     <div class="ac-main-right">
                         <h2>My Order</h2>
+                        @if (Session::has('message'))
+                           <div class="alert alert-success" style="margin-top: 18px;"><i class="pe-7s-gleam"></i>{{ Session::get('message') }}</div>
+                        @endif
                         
+                        @if(count($user_order) == 0)
+                        <span>No Order Placed</span>
+                        @else
+                        @foreach($user_order as $key => $value)
                         <div class="dt-ord-top clears">
                             <div class="dt-ord-top-left">
-                                <span>Order ID: 12345678911 ( 2 Item )</span>
-                                <span>Placed on May, 2016</span>
+                                <span>Order ID: {{$value->order_id}} ({{$value->order_quantity}} Item's)</span>
+                                <span>Placed on {{$value->order_created_at}}</span>
                             </div>
-                            <div class="dt-ord-top-right">
+                            <!-- <div class="dt-ord-top-right">
                                 <a href="#" class="btns dt">Details</a>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="prod-order-status">
                             <div class="row">
                                 <div class="col-lg-2">
-                                    <prod><img src="images/new-prod1.jpg" alt=""></prod>
+                                    <prod>{!!HTML::image(config('global.productPath').$value->product_image)!!}</prod>
                                 </div>
                                 <div class="col-lg-7">
                                     <div class="order-issue">
-                                        <h3>Aenean sed fringilla diam</h3>
-                                        <div class="issue-box-wrap">
+                                        <h3>{{$value->product_name}}</h3>
+                                        <!-- <div class="issue-box-wrap">
                                             <ul>
                                                 <li><a href="#">Return / Replace</a></li>
                                                 <li><a href="#">get invoice</a></li>
@@ -62,10 +68,10 @@
                                                     <a href="#">message seller</a>
                                                 </li>
                                             </ul>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
+                                <!-- <div class="col-lg-3">
                                     <div class="wrt-review">
                                         <span><i class="fa fa-file-text-o" aria-hidden="true"></i> Write a Review!</span>
                                         <ul>
@@ -76,11 +82,12 @@
                                             <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
                                         </ul>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
+
                         <div class="track-holder">
-                        <div class="deliver-sec clears">
+                         <div class="deliver-sec clears">
                             <div class="deliver-sec-left">
                                 <span>Status:</span>
                                 <small>Delivered</small>
@@ -90,7 +97,8 @@
                                 <small>28 May, 2016</small>
                             </div>
                         </div>
-                        <div class="track-bar-wrap">
+
+                        <!-- <div class="track-bar-wrap">
                             <div class="track-bar">
                                 <span></span>
                                 <span></span>
@@ -102,10 +110,16 @@
                                 <li>Dielivered</li>
                             </ul>
                         </div>
-                        <a href="#" class="track">Track</a>    
+                        <a href="#" class="track">Track</a>-->
                         </div>
+                        @endforeach
+                        @endif
+
                         <div class="wishlist-wrap">
                             <h2>My Wishlist</h2>
+                            @if(count($wishlist_product) == 0)
+                                <span>No item in Wishlist</span>
+                            @else
                             <table class="wishlist-table" width="100%">
                                 <thead>
                                     <tr>
@@ -116,27 +130,40 @@
                                         <th>&nbsp;</th>
                                     </tr>
                                 </thead>
-                                
                                 <tbody>
+                                @foreach($wishlist_product as $wkey => $wvalue)
                                     <tr>
                                         <td>
                                             <table>
                                                 <tr>
-                                                    <td><a href="#" class="cross"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    <td><a href="javascript:void(0)" class="cross addwishlist" data-id="<?php echo Crypt::encrypt($wvalue->product_id);?>" data-status="1"><i class="fa fa-times" aria-hidden="true"></i></a>
                                                     </td>
                                                     <td>
                                                         <prod>
-                                                            <img src="images/new-prod1.jpg" alt="">
+                                                            {!!HTML::image(config('global.productPath').$wvalue->product_image)!!}
                                                         </prod>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </td>
-                                        <td>Aenean sed fringilla diam</td>
-                                        <td>$150.00</td>
-                                        <td style="color:#b2735e">In Stock</td>
+                                        <td> @php $parameter= Crypt::encrypt($wvalue['product_id']) @endphp
+                                            <a href="{!! URL::to('product-details').'/'.str_slug($wvalue['product_name'], '-').'/'.$parameter !!}"> 
+                                            {{$wvalue->product_name}}
+                                            </a>
+                                        </td>
+                                        <td>${{$wvalue->product_selling_price}}</td>
+                                        <td style="color:#b2735e">
+                                            @if($wvalue->product_quantity > 0)
+                                                In Stock
+                                            @else
+                                                Out Of Stock
+                                            @endif
+                                        </td>
                                         <td><a href="#" class="btns">Add to Cart</a></td>
                                     </tr>
+                                    @endforeach
+                                    @endif
+                                    <br/><br/>
                                     <tr>
                                         <td><a href="#" class="edit-add">Edit Address</a></td>
                                         <td colspan="4"></td>

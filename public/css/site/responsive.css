@@ -100,7 +100,24 @@
     banner{background-position: center -40px}
     
      .menu ul li{
-        margin:0 15px; 
+        margin:0 38px; 
+    }
+    
+     .search-sec{
+        margin: 0 0 10px;
+        width: 80%;
+    }
+    
+    .main-header-holder{
+        width: 80%;
+    }
+    
+    .search-sec{
+        width: 100%;
+    }
+    
+    .header-center{
+        padding: 20px 0 0;
     }
     
     .menu ul li a{
@@ -261,6 +278,19 @@
 
 }
 
+
+@media only screen and (max-width: 940px){
+    .menu ul li {
+    margin: 0 20px;
+}
+    
+    .search-sec{
+        margin: 0 0 10px;
+        width: 80%;
+    }
+}
+
+
 @media only screen and (max-width: 885px){
         .new-prod-block .slick-prev{
         left: 240px;
@@ -341,11 +371,14 @@ margin: 0 0 4px;
 }
     
 .header-right-tog-content{
-    display: none;
-    right: -20px;
+    right: 0;
     position: absolute;
     top: auto;
     z-index: 99;
+}
+    
+.login-toggle-content{
+    display: none;
 }
 
 .menu-toggle{
@@ -555,7 +588,8 @@ margin: 0 0 4px;
 .main-header-holder {
     float: right;
     position: relative;
-    top: -60px;
+    top:0px;
+    width: 100%
 }
     
 .header-right-tog-content{
@@ -604,7 +638,7 @@ margin: 0 0 4px;
 }
     
 .main-header-wrap{
-    padding: 8px 0 0;
+    padding: 8px 0;
 }
     
 .header-right-toggle {
@@ -613,7 +647,7 @@ margin: 0 0 4px;
     left: auto;
     position: absolute;
     right: -10px;
-    top: -43px;
+    top: 0;
 }
  
     
@@ -624,7 +658,7 @@ margin: 0 0 4px;
     display: block;
     position: absolute;
     left: 15px;
-    top: 7px;
+    top: 22px;
     color:#9f6c5b; 
     cursor: pointer;
     z-index: 99;
@@ -830,6 +864,13 @@ a.logo{
 .banner-content{
     bottom: 68px;
 }
+    
+.header-center{
+    padding: 15px 0;
+    width: 70px;
+}
+    
+
 
 }
 

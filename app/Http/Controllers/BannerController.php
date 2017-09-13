@@ -83,5 +83,19 @@ class BannerController extends Controller
         return redirect()->back();
     }
 
+        public function editBanner($name, $id)
+    {
+        $live = array('menu'=>'43','parent'=>'9');
+        $bID = Crypt::decrypt($id);
+        $bannerInfo = Banner::find($bID);
+        return view('admin.editBanner', compact('live','bannerInfo'));
+        
+    }
+      public function updateBanner(){
+
+
+
+      }
+
 
 }
