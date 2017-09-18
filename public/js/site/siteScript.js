@@ -16,7 +16,7 @@ $(document).ready(function(){
 	            	{	
 	            		$(".cart_loading").html('');
 	            		$("#cart_success_msg").html('<div class="alert alert-success">Item Added to Cart <i class="fa fa-shopping-cart"></i> </div>');
-	            		$('#count_cart').html(result.cart_count);
+	            		$('#count_cart').html('('+result.cart_count+')');
 	            		$('.alert').delay(3000).fadeOut(400);
 	            	}
 	            else if(result.status == 2)
@@ -37,6 +37,7 @@ $(document).ready(function(){
 
 	//add to cart from product page(one single item)
  	$('body').on('click','.add_to_cart',function(){
+
 		var quantity=1;
 		var pro_id = $(this).attr('value');
 		var decr_pro_id = $(this).attr('p');
@@ -55,7 +56,7 @@ $(document).ready(function(){
 	            	{
 	            		$("#cart_loading"+decr_pro_id).html('');
 	            		$("#cart_success_msg"+decr_pro_id).html('<div class="alert alert-success">Item Added to Cart <i class="fa fa-shopping-cart"></i> </div>');
-	            		$('#count_cart').html(result.cart_count);
+	            		$('#count_cart').html('('+result.cart_count+')');
 	            		$('.alert').delay(3000).fadeOut(400);
 	            	}
 	            else if(result.status == 2)
@@ -166,6 +167,7 @@ $(document).ready(function(){
 	$('.addwishlist').click(function(){
 		var pro_id=$(this).attr('data-id');
 		var status=$(this).attr('data-status');
+		var a=$(this).attr('a');
 
 		$.ajax({
 			url : base_url+'/add_to_wishlist',
@@ -176,15 +178,67 @@ $(document).ready(function(){
 			},
 			success:function(data){
 		    	if(data==1){
-		    		//$('#wishlist_msg').html('<div class="alert alert-success">Item added to wishlist</div>');
-		    		location.reload();
+			    		$('#wishlist_msg').show();
+			    		$('#wishlist_msg').html('<div class="alert alert-success">Item added to wishlist</div>');
+			    		$('.fa-heart').css("color", "red");
+			    		$('.addwishlist').attr('data-status',1);
+			    		$('#wishlist_msg').delay(4000).fadeOut(400);
 		    	}else if(data==2){
-		    		//$('#wishlist_msg').html('<div class="alert alert-success">Item removed from wishlist</div>');
-		    		location.reload();
+		    		if(a==0)
+		    		{
+			    		$('#wishlist_msg').show();
+			    		$('#wishlist_msg').html('<div class="alert alert-success">Item removed from wishlist</div>');
+			    		$('.fa-heart').css("color", "#ccc");
+			    		$('.addwishlist').attr('data-status',0);
+			    		$('#wishlist_msg').delay(4000).fadeOut(400);
+		    		}
+		    		else
+		    		{
+		    			location.reload();
+		    		}
 		    	}
 			}
 		});
 	});
+
+
+	$('.wishlist_to_cart').click(function(){
+		var quantity=1;
+		var pro_id = $(this).attr('value');
+		var decr_pro_id = $(this).attr('p');
+
+		$.ajax({
+        	url : base_url+'/add_cart',
+        	type: "POST",
+        	data:{'quantity':quantity,'pro_id':pro_id, _token: token},
+			beforeSend: function(){
+				$("#cart_loading"+decr_pro_id).html('<i class="fa fa-spinner fa-pulse"></i> Please wait ...');
+			},
+        	success:function(data){
+        		var result=jQuery.parseJSON(data);
+            	if(result.status == 1)
+	            	{
+	            		$("#cart_loading"+decr_pro_id).html('');
+	            		$("#cart_success_msg"+decr_pro_id).html('<div class="alert alert-success">Item Added to Cart <i class="fa fa-shopping-cart"></i> </div>');
+	            		$('#count_cart').html('('+result.cart_count+')');
+	            		$('.alert').delay(3000).fadeOut(400);
+	            	}
+	            else if(result.status == 2)
+		            {
+		            	$(".cart_loading"+decr_pro_id).html('');
+	            		$("#cart_success_msg"+decr_pro_id).html('<div class="alert alert-warning">You Must select lower or equal value of current available stock. <i class="fa fa-shopping-cart"></i> </div>');
+	            		$('.alert').delay(4000).fadeOut(400);
+		            }
+            	else
+	            	{
+	            		$(".cart_loading"+decr_pro_id).html('');
+	            		$("#cart_success_msg"+decr_pro_id).html('<div class="alert alert-danger">Error Occured. Please try again later!!</div>');
+	            		$('.alert').delay(3000).fadeOut(400);
+	            	}
+        	}
+    	});
+	});
+
 
 	$('.cat-slider').slick({
 	  dots: true,

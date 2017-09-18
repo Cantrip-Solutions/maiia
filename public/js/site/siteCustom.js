@@ -200,7 +200,7 @@ $('#parentVerticalTab').easyResponsiveTabs({
     
      
     
-          $('input.autocomplete').autocomplete({
+$('input.autocomplete').autocomplete({
     data: {
       "T-shirt": null,
     },
@@ -209,6 +209,6 @@ $('#parentVerticalTab').easyResponsiveTabs({
       // Callback function when value is autcompleted.
     },
     minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
-  });
+});
     
     

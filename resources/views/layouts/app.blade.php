@@ -25,6 +25,10 @@
         }
     </style>
 </head>
+<script type="text/javascript">
+ var base_url = "{{url('/')}}";
+ var token="{{ csrf_token() }}";
+</script>
 <body id="app-layout">
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">

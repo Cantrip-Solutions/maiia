@@ -569,15 +569,27 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4c1b6', end
 }
 
 .product-holder{
-    padding: 30px 0;
+    margin: 0 0 50px;
+  
 }
 
-.position-prod ul li{
-    width: 33%;
+.new-col{
+     background: url(../../images/siteImages/banner-back.jpg) no-repeat left top;
+    background-size:100% 100%;  
+    padding: 50px 0 70px;
+}
+
+.new-col h1{
+    color: #fff !important;
+}
+
+.position-prod ul li {
     display: inline-block;
-    vertical-align: top;
-    position: relative;
+    margin: 0 5px;
     overflow: hidden;
+    position: relative;
+    vertical-align: top;
+    width: 24%;
 }
 
 /*.position-prod ul li a{
@@ -664,6 +676,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4c1b6', end
     transition: all 0.4s linear 0s;
 }
 
+/*
 .new-prod-block ul li:hover .prod:after{
     background: rgba(255,255,255,0.6);
     position: absolute;
@@ -678,6 +691,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4c1b6', end
     -webkit-transition: all 0.4s linear 0s;
     transition: all 0.4s linear 0s;
 }
+*/
 
 
 .new-prod-block ul li:hover .view-sec{
@@ -744,6 +758,34 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4c1b6', end
     background: #fff;
     padding: 0;
     float: none !important;
+    position: relative;
+}
+
+
+.add_to_cart{
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    color:#000; 
+    display: none;
+    z-index: 15;
+}
+
+.prod-list .new-prod-block ul li:hover .add_to_cart{
+    display: block;
+}
+
+.new-prod-block ul li:hover .add_to_cart{
+     display: block;
+}
+
+
+.cart-holder{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9;
 }
 
 .view-icon li a{
@@ -852,18 +894,19 @@ footer{
 }
 
 .new-prod-block .slick-prev {
-    border: 1px solid #af7c6b;
+    border: 1px solid #000;
     height: 40px;
-    left: 440px;
+    left: -50px;
     outline: 0 none;
     position: absolute;
-    top: -60px;
+    top: 50%;
     width: 40px;
     z-index: 99;
+    transform: translate(0, -50%);
 }
 
 .new-prod-block .slick-prev::after {
-    color: #af7c6b;
+    color: #000;
     content: "";
     font-family: FontAwesome;
     left: 50%;
@@ -874,13 +917,14 @@ footer{
 
 .new-prod-block .slick-next{
     position: absolute;
-    right: 440px;
-    top: -60px;
+    right: -50px;
+    top: 50%;
     z-index: 99;
-    border: 1px solid #af7c6b;
+    border: 1px solid #000;
     outline: 0;
     width: 40px;
     height: 40px;
+    transform: translate(0, -50%);
     
 }
 
@@ -892,7 +936,7 @@ footer{
     position: absolute;
     top: 50%;
     transform: translate(-50%, -50%);
-    color: #af7c6b;
+    color: #000;
 }
 
 
@@ -2413,10 +2457,10 @@ color:#a9b0b2;
 .cross {
     color: red;
     display: block;
-    font-size: 16px;
+    font-size: 35px;
     text-align: center;
     position: relative;
-    left: 20px;
+    /*left: 20px;*/
 }
 
 .wishlist-table prod{

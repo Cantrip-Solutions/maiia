@@ -80,8 +80,8 @@
                                 </td>
                                 <td>{{$order->created_at}}</td>
                                 <td>
-                                    {{-- <a style="font-size: medium;" class="fa fa-pencil-square-o" href="/tab/company/edit/{{$user->name}}/{{Crypt::encrypt($user->id)}}"></a>
-                                    <a style="font-size: medium;" class="fa fa-trash-o" id="{{Crypt::encrypt($user->id)}}"></a> --}}
+                                    <a style="font-size: medium;" class="fa fa-pencil-square-o" href="/tab/orders/edit/{{Crypt::encrypt($order->id)}}"></a>
+                                    {{-- <a style="font-size: medium;" class="fa fa-trash-o" id="{{Crypt::encrypt($order->id)}}"></a> --}}
                                 </td>
                             </tr>
                             @endforeach
@@ -102,7 +102,10 @@
 {!! HTML::script('admintheme/vendor/datatables_plugins_homer/integration/bootstrap/3/dataTables.bootstrap.min.js') !!}
 
 <script type="text/javascript">
-    var dataTable = $('#example1').dataTable();
+    var dataTable = $('#example1').dataTable({
+        responsive: true
+    });
+    
     // $('.fa-trash-o').on('click', function(){
     //         var id = $(this).attr('id');
     //         bootbox.confirm("Are you sure to delete this User?", function(result) {

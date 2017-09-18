@@ -33,7 +33,7 @@
                         </ul>
                     </div>
                     <div class="ac-main-right">
-                        <h2>My Order</h2>
+                        <h2>My Order (Total: {{count($user_order)}} Item's)</h2>
                         @if (Session::has('message'))
                            <div class="alert alert-success" style="margin-top: 18px;"><i class="pe-7s-gleam"></i>{{ Session::get('message') }}</div>
                         @endif
@@ -44,8 +44,7 @@
                         @foreach($user_order as $key => $value)
                         <div class="dt-ord-top clears">
                             <div class="dt-ord-top-left">
-                                <span>Order ID: {{$value->order_id}} ({{$value->order_quantity}} Item's)</span>
-                                <span>Placed on {{$value->order_created_at}}</span>
+                                <span>Order ID: #{{$value->order_id}}</span>
                             </div>
                             <!-- <div class="dt-ord-top-right">
                                 <a href="#" class="btns dt">Details</a>
@@ -89,12 +88,16 @@
                         <div class="track-holder">
                          <div class="deliver-sec clears">
                             <div class="deliver-sec-left">
-                                <span>Status:</span>
-                                <small>Delivered</small>
+                                <span>Quantity:</span>
+                                <small>{{$value->order_quantity}}</small>,
+
+                                <span>Total Price:</span>
+                                <small>{{$value->order_price}}</small>
                             </div>
+
                             <div class="deliver-sec-right">
-                                <span>Delivered On:</span>
-                                <small>28 May, 2016</small>
+                                <span>Placed On:</span>
+                                <small>{{$value->order_created_at}}</small>
                             </div>
                         </div>
 
@@ -124,6 +127,7 @@
                                 <thead>
                                     <tr>
                                         <th>&nbsp;</th>
+                                        <th>&nbsp;</th>
                                         <th>Product Name</th>
                                         <th>Unit Price</th>
                                         <th>Stock Status</th>
@@ -136,7 +140,7 @@
                                         <td>
                                             <table>
                                                 <tr>
-                                                    <td><a href="javascript:void(0)" class="cross addwishlist" data-id="<?php echo Crypt::encrypt($wvalue->product_id);?>" data-status="1"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                    <td><a href="javascript:void(0)" class="cross addwishlist" data-id="<?php echo Crypt::encrypt($wvalue->product_id);?>" data-status="1" a="1" style="min-width: 50px;"><i class="fa fa-times" aria-hidden="true"></i></a>
                                                     </td>
                                                     <td>
                                                         <prod>
@@ -146,7 +150,8 @@
                                                 </tr>
                                             </table>
                                         </td>
-                                        <td> @php $parameter= Crypt::encrypt($wvalue['product_id']) @endphp
+                                        <td>
+                                            @php $parameter=Crypt::encrypt($wvalue['product_id']) @endphp
                                             <a href="{!! URL::to('product-details').'/'.str_slug($wvalue['product_name'], '-').'/'.$parameter !!}"> 
                                             {{$wvalue->product_name}}
                                             </a>
@@ -159,7 +164,12 @@
                                                 Out Of Stock
                                             @endif
                                         </td>
-                                        <td><a href="#" class="btns">Add to Cart</a></td>
+                                        <td><a href="javascript:void(0)" class="wishlist_to_cart btns" value="{{$parameter}}" p="{{$wvalue['product_id']}}">Add to Cart</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td id="cart_loading{{$wvalue['product_id']}}"></td>
+                                        <td id="cart_success_msg{{$wvalue['product_id']}}"></td>
                                     </tr>
                                     @endforeach
                                     @endif

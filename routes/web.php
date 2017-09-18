@@ -112,6 +112,8 @@ Route::group(['middleware' => 'auth'], function () {
 		
 		//Order route
 		Route::get('/tab/orders', 'OrdersController@chartOrders');
+		Route::get('/tab/orders/edit/{id}', 'OrdersController@editOrders');
+		Route::post('/tab/orders/update_order', 'OrdersController@update_order');
 		Route::get('/tab/transactions', 'OrdersController@chartTransactions');
 
 		// ------------------------Settings---------------------------

@@ -37,7 +37,7 @@ class HomeController extends Controller
             ->where('product_images.default_image', '=', '1')
             ->where('featured', '=', '1')
             ->select('products.id as product_id','products.name as product_name','products.original_price as product_original_price','products.saling_price as product_saling_price','products.quantity as product_quantity','products.description as product_description','product_images.id as product_images_id','product_images.image as product_image','product_images.default_image as product_default_images')
-            ->limit(3)
+            ->limit(4)
             ->get();
 
         $get_new_in_product=Product::join('product_images' , 'product_images.pro_id_fk' , '=' , 'products.id')

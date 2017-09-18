@@ -133,6 +133,7 @@ class CartController extends Controller
 				->select('products.saling_price as product_selling_price','products.quantity as product_quantity')
 				->get();
 
+			//check if selected amount is greater than current available stock
 			if($var['quantity'] > $get_product_buying_price[0]['product_quantity'])
 				{
 					return json_encode(array('status'=>2));
@@ -146,12 +147,27 @@ class CartController extends Controller
 							$user_data = Auth::User();
 			                $user_id=$user_data->id;
 
-			                $bucket_data= new Bucket;
-			                $bucket_data->pro_id_fk=$var['pro_id'];
-			                $bucket_data->u_id_fk=$user_id;
-			                $bucket_data->quantity=$var['quantity'];
-			                $bucket_data->buying_price=$buying_price;
-			                $bucket_data->save();
+							//check if already a product is added to cart
+			                $count_exists_product=Bucket::where('pro_id_fk', '=', $var['pro_id'])
+			                	->where('u_id_fk', '=', $user_id)
+			                	->count();
+
+			                if($count_exists_product == 0)
+			                {
+				                $bucket_data= new Bucket;
+				                $bucket_data->pro_id_fk=$var['pro_id'];
+				                $bucket_data->u_id_fk=$user_id;
+				                $bucket_data->quantity=$var['quantity'];
+				                $bucket_data->buying_price=$buying_price;
+				                $bucket_data->save();
+				             }
+				             else
+				             {
+				             	$update_from_bucket=Bucket::where('pro_id_fk','=',$var['pro_id'])
+				                	->where('u_id_fk', '=', $user_id)
+			          				->update(['quantity' => $var['quantity']]);
+				             }
+				             //end check
 
 			                $count_user_bucket_data=Bucket::where('u_id_fk', '=', $user_id)
 			                	->count();
@@ -168,11 +184,18 @@ class CartController extends Controller
 								$newarray = unserialize($_COOKIE['cartinfo']);
 								foreach($newarray as $key => $value)
 								{
-									array_push($new_cart_arr,$value);
+									//if product already is in cart then ignore it from previous list
+									if($value['pro_id'] != $var['pro_id'])
+									{
+										array_push($new_cart_arr,$value);
+									}
 								}
+								//insert new product in cart
 								array_push($new_cart_arr,$var);
+								$cartarray_count=count($new_cart_arr);
+
 					            setcookie('cartinfo', serialize($new_cart_arr), time() + (86400 * 30), "/"); // 86400 = 1 day
-					            $cartarray_count=count($newarray)+1;
+					            
 					            return json_encode(array('status'=>1,'cart_count'=>$cartarray_count));
 					        }
 					        else

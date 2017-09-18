@@ -166,18 +166,15 @@ class SiteproductController extends Controller
      	{
      		$p_id = Crypt::encrypt($value->product_id);
      		$pName = str_slug($value->product_name);
-     		$html.='<li><div class="new-prod"><div class="prod">';
-     		$html.='<figure><img src="'.url('/images/productImage').'/'.$value->product_image.'"></figure>';
-     		$html.='<div class="view-sec"><ul class="view-icon">';
-     		$html.='<li><a href="javascript:void(0)" class="add_to_cart" value="'.$p_id.'" p="'.$value->product_id.'"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>';
-     		/*$html.='<li><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></li>';
-     		$html.='<li><a href="#"><i class="fa fa-refresh" aria-hidden="true"></i></a></li>';*/
-     		$html.='</ul><div id="cart_loading'.$value->product_id.'"></div><div id="cart_success_msg'.$value->product_id.'"></div>';
-     		$html.='<a href="'.url('/product-details').'/'.$pName.'/'.$p_id.'" class="quick-view fancybox">';
-     		$html.='<i class="fa fa-search" aria-hidden="true"></i>Quick View</a></div></div>';
-     		$html.='<div class="btm"><h2>'.$value->product_name.'</h2>';
-     		$html.='<div class="price"><span>$ '.$value->product_original_price.'</span>';
-     		$html.='<span>$ '.$value->product_saling_price.'</span></div></div></div></li>';
+     		$html.='<li>';
+            $html.='<a href="'.url('/product-details').'/'.$pName.'/'.$p_id.'" class="new-prod">';
+     		$html.='<div class="prod"><figure><img src="'.url('/images/productImage').'/'.$value->product_image.'"></figure></div>';
+            $html.='<div class="btm"><h2>'.$value->product_name.'</h2>';
+            $html.='<div class="price"><span>$ '.$value->product_original_price.'</span>';
+            $html.='<span>$ '.$value->product_saling_price.'</span></div></div></a>';
+            $html.='<div class="cart-holder"><a href="javascript:void(0)" class="add_to_cart" value="'.$p_id.'" p="'.$value->product_id.'"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>';
+            $html.='<div id="cart_loading'.$value->product_id.'"></div><div id="cart_success_msg'.$value->product_id.'"></div></li>';
+     		
      	}
      	return $html;
      }

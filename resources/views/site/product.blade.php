@@ -79,39 +79,35 @@
               <div class="loader"> </div>
               <ul id="productsort">
                 @if(count($all_product[0]) == 0)
-                <span>No Product Available</span>
+                  <span>No Product Available</span>
                 @else
-                @foreach($all_product as $key => $value)
-                @foreach ($value as $ckey => $cvalue)
-                <li>
-                  <div class="new-prod">
-                    <div class="prod">
-                      <figure>{!!HTML::image(config('global.productPath').$cvalue->product_image)!!}</figure>
+                  @foreach($all_product as $key => $value)
+                    @foreach ($value as $ckey => $cvalue)
                       @php $parameter=Crypt::encrypt($cvalue['product_id']) @endphp
-                      <div class="view-sec">
-                        <ul class="view-icon">
-                          <li><a href="javascript:void(0)" class="add_to_cart" value="{{$parameter}}" p="{{$cvalue['product_id']}}"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a></li>
-                          <!-- <li><a href="#"><i class="fa fa-refresh" aria-hidden="true"></i></a></li> -->
-                        </ul>
-                        <div id="cart_loading{{$cvalue['product_id']}}"></div>
-                        <div id="cart_success_msg{{$cvalue['product_id']}}"></div>
-                        <a href="{!! URL::to('product-details').'/'.str_slug($cvalue['product_name'], '-').'/'.$parameter !!}" class="quick-view fancybox">
-                          <i class="fa fa-search" aria-hidden="true"></i>
-                          Quick View
+                      <li>
+                        <a href="{!! URL::to('product-details').'/'.str_slug($cvalue['product_name'], '-').'/'.$parameter !!}" class="new-prod">
+                          <div class="prod">
+                            <figure>{!!HTML::image(config('global.productPath').$cvalue->product_image)!!}</figure>
+                            <!-- <div class="view-sec">
+                              <a href="{!! URL::to('product-details').'/'.str_slug($cvalue['product_name'], '-').'/'.$parameter !!}" class="quick-view fancybox"><i class="fa fa-search" aria-hidden="true"></i>Quick View</a>
+                            </div>-->
+                          </div>
+                          <div class="btm">
+                            <h2>{{$cvalue->product_name}}</h2>
+                            <div class="price">
+                              <span>$ {{$cvalue->product_original_price}}</span>
+                              <span>$ {{$cvalue->product_saling_price}}</span>
+                            </div>
+                          </div>
                         </a>
-                      </div>
-                    </div>
-                    <div class="btm">
-                      <h2>{{$cvalue->product_name}}</h2>
-                      <div class="price">
-                        <span>$ {{$cvalue->product_original_price}}</span>
-                        <span>$ {{$cvalue->product_saling_price}}</span>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                @endforeach
-                @endforeach
+                        <div class="cart-holder">
+                         <a href="javascript:void(0)" class="add_to_cart" value="{{$parameter}}" p="{{$cvalue['product_id']}}"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                          <div id="cart_loading{{$cvalue['product_id']}}"></div>
+                          <div id="cart_success_msg{{$cvalue['product_id']}}"></div>
+                        </div>
+                      </li>
+                    @endforeach
+                  @endforeach
                 @endif
               </ul>
             </div>

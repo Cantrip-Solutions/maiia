@@ -18,15 +18,21 @@
     {!!HTML::style('admintheme/vendor/animate.css/animate.css')!!}
     {!!HTML::style('admintheme/vendor/bootstrap/dist/css/bootstrap.css')!!}
 
-
     <!-- App styles -->
     {!!HTML::style('admintheme/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css')!!}
     {!!HTML::style('admintheme/fonts/pe-icon-7-stroke/css/helper.css')!!}
     {!!HTML::style('admintheme/styles/style.css')!!}
+    {!!HTML::style('https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.css')!!}
   
     @stack('css')
 
+<script type="text/javascript">
+ var base_url = "{{url('/')}}";
+ var token="{{ csrf_token() }}";
+</script>
+
 </head>
+
 <body>
 
 <!-- Simple splash screen-->
@@ -107,6 +113,7 @@
 {!!HTML::script('admintheme/vendor/sparkline/index.js')!!}
 {!!HTML::script('plugins/bootbox.min.js')!!}
 {!!HTML::script('admintheme/vendor/nestable/jquery.nestable.js')!!}
+{!!HTML::script('http://cdn.datatables.net/responsive/2.2.0/js/dataTables.responsive.js')!!}
 
 <!-- App scripts -->
 {!!HTML::script('admintheme/scripts/homer.js')!!}
