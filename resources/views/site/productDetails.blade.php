@@ -14,7 +14,7 @@
                     <i class="fa fa-heart" <?php if($wishlisted == 0){?> style="color: #ccc;" <?php }else{?> style="color: red;" <?php }?> aria-hidden="true"></i>
                   </div>
                 </a>
-                <a href="{{ URL::to('/').'/'.config('global.productPath').'/'.$images[0]->image }}" class = 'cloud-zoom' id='zoom1' rel="adjustX:10, adjustY:-4">{!!HTML::image(config('global.productPath').$images[0]->image)!!}
+                <a href="{{ URL::to('/').'/'.config('global.productPath').$images[0]->image }}" class = 'cloud-zoom' id='zoom1' rel="adjustX:10, adjustY:-4">{!!HTML::image(config('global.productPath').$images[0]->image)!!}
                 </a>
               </div>
 
@@ -23,7 +23,7 @@
                  @php unset($images[0]) @endphp
                  @foreach($images as $key => $img_value)
                  <li class="thumbAc">
-                   <a href="{{ URL::to('/').'/'.config('global.productPath').'/'.$img_value->image }}" class='cloud-zoom-gallery' title='' rel="useZoom: 'zoom1', smallImage: '{{ URL::to('/').'/'.config('global.productPath').'/'.$img_value->image }}' ">{!!HTML::image(config('global.productPath').$img_value->image,'',array('class'=>'zoom-tiny-image','width'=>'65', 'alt' => 'Thumbnail 1'))!!}</a>
+                   <a href="{{ URL::to('/').'/'.config('global.productPath').$img_value->image }}" class='cloud-zoom-gallery' title='' rel="useZoom: 'zoom1', smallImage: '{{ URL::to('/').'/'.config('global.productPath').$img_value->image }}' ">{!!HTML::image(config('global.productPath').$img_value->image,'',array('class'=>'zoom-tiny-image','width'=>'65', 'alt' => 'Thumbnail 1'))!!}</a>
                  </li>
                  @endforeach
                </ul>

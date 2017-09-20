@@ -20,7 +20,6 @@ Route::get('/miia-registration', 'HomeController@registrationView');
 Route::get('/miia-login', 'HomeController@loginView');
 Route::post('/submitRegistration', 'HomeController@submitRegistration');
 Route::post('/submitLogin', 'HomeController@submitLogin');
-/*Route::get('/chartCategory', 'HomeController@chartCategory');*/
 Route::get('/product/{slug}/{id}', 'SiteproductController@productList');
 Route::get('/product-details/{slug}/{id}', 'SiteproductController@productDetails');
 Route::post('/product/sortingListing', 'SiteproductController@productSortingList');
@@ -44,6 +43,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/my-account','SiteproductController@myaccount')->middleware('role:U');
     Route::get('/dashboard', 'DashboardController@gotoDashboard')->middleware('role:A|S');
 	Route::post('/add_to_wishlist', 'SiteproductController@add_to_wishlist')->middleware('role:U');
+	Route::post('/show_ord', 'SiteproductController@showmoreOrder')->middleware('role:U');
+
 
 	//-----------PAYPAL----------------//
 	// route for view/blade file
@@ -56,7 +57,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//-------------------------Admin Panel-----------------------
 	Route::group(['middleware' => 'role:A'], function () {
-
 		// Consumer route
 		Route::get('/tab/consumer', 'ConsumerController@chartConsumer');
 		Route::get('/tab/consumer/view/{name}/{id}', 'ConsumerController@viewConsumer');

@@ -239,6 +239,45 @@ $(document).ready(function(){
     	});
 	});
 
+	
+	$('.show_ord').click(function(){
+		var count=0;
+		if($('#ord_ct').val() == "")
+			{
+				var count=2;
+			}
+		else
+			{
+				var count=$('#ord_ct').val();
+			}
+
+		$.ajax({
+	    	url: base_url+'/show_ord',
+		    type: 'POST',
+		    data:{'count':count, _token: token},
+
+			beforeSend: function() {
+				$('.ord_loader').html('<i class="fa fa-spinner fa-pulse"></i>');
+			},
+
+			success:function(data)
+		            {
+		            	if(!data)
+		            	{
+		            		$('.ord_div').hide();
+		            		$('.ord_msg').html('<b>NO MORE ORDERS TO DISPLAY</b>');
+		            	}
+		            	else
+		            	{
+			            	current_final_count= parseInt(count) + 2;
+			        		$('#ord_ct').val(current_final_count);
+			            	$('#order_list').append(data);
+		            	}
+		            	$('.ord_loader').html('');
+		    		}
+	    	});
+	});
+
 
 	$('.cat-slider').slick({
 	  dots: true,
@@ -352,7 +391,7 @@ $(function(){
 		            	if(!data)
 		            	{
 		            		$('.product_exists_msg').show();
-		            		$('.product_exists_msg').html('<b>No Product Available</b>');
+		            		$('.product_exists_msg').html('<b>NO MORE RESULTS TO DISPLAY</b>');
 		            	}
 		            	else
 		            	{

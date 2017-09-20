@@ -29,6 +29,7 @@ class CartController extends Controller
 					$user_data = Auth::User();
 			        $user_id=$user_data->id;
 
+			        //syncronize cookie after login
 					if(isset($_COOKIE['cartinfo']))
 						{
 							$cartarray = unserialize($_COOKIE['cartinfo']);
@@ -48,6 +49,7 @@ class CartController extends Controller
 				            }
 				            setcookie('cartinfo', '', time() + (86400 * 30), "/"); // 86400 = 1 day
 				        }
+				        //end
 				    
 					    	$get_product=Product::join('buckets' , 'buckets.pro_id_fk' , '=' , 'products.id')
 					    	->join('product_images' , 'product_images.pro_id_fk' , '=' , 'products.id')
@@ -432,7 +434,6 @@ class CartController extends Controller
 	                  if (Auth::check())
 						{
 							$user_data = Auth::User();
-
 			                $trans_data = new Transactions;
 							$trans_data->trans_code = 'TRAN'.time().rand(100,999);
 							$trans_data->p_trans_code = 'PR'.time().rand(100,999);

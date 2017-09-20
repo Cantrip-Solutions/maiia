@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use App\User;
 use App\Model\Product;
 use \App\Model\Orders;
 use \App\Model\Category;
@@ -183,12 +184,18 @@ class SiteproductController extends Controller
           {
                $user_data = Auth::User();
 
+               //get user info
+                $get_user_info=User::join('user_infos' , 'user_infos.u_id_fk' , '=' , 'users.id')
+                ->where('users.id', '=', $user_data->id)
+                  ->get();
+
                //get user order history
                $get_user_order=Orders::join('products' , 'products.id' , '=' , 'orders.pro_id_fk')
                     ->join('product_images' , 'product_images.pro_id_fk' , '=' , 'products.id')
                     ->where('orders.u_id_fk', '=', $user_data->id)
                     ->where('product_images.default_image', '=', '1')
-                    ->select('products.id as product_id','products.name as product_name','product_images.id as product_images_id','product_images.image as product_image','product_images.default_image as product_default_images','orders.id as order_id','orders.quantity as order_quantity','orders.total_price as order_price','orders.created_at as order_created_at')
+                    ->select('products.id as product_id','products.name as product_name','product_images.id as product_images_id','product_images.image as product_image','product_images.default_image as product_default_images','orders.id as order_id','orders.quantity as order_quantity','orders.total_price as order_price','orders.status as order_status','orders.created_at as order_created_at')
+                    ->limit(2)
                     ->get();
 
 				//get user wishlist history
@@ -199,7 +206,7 @@ class SiteproductController extends Controller
                     ->select('products.id as product_id','products.name as product_name','product_images.id as product_images_id','product_images.image as product_image','product_images.default_image as product_default_images','products.saling_price as product_selling_price','products.quantity as product_quantity','wishlist.id as wishlist_id')
                     ->get();
                //echo '<pre>'; print_r($get_wishlist_product); exit;
-               return view('site/account',array('user_order'=>$get_user_order,'wishlist_product'=>$get_wishlist_product));
+               return view('site/account',array('user_info'=>$get_user_info[0], 'user_order'=>$get_user_order,'wishlist_product'=>$get_wishlist_product));
           }
           
     public function add_to_wishlist()
@@ -228,5 +235,65 @@ class SiteproductController extends Controller
             		echo 2;
 		        }
       	}
+
+      	
+      public function showmoreOrder()
+      	{
+      		$var=Input::except('_token');
+      		$user_data = Auth::User();
+      		$get_user_order=Orders::join('products' , 'products.id' , '=' , 'orders.pro_id_fk')
+                    ->join('product_images' , 'product_images.pro_id_fk' , '=' , 'products.id')
+                    ->where('orders.u_id_fk', '=', $user_data->id)
+                    ->where('product_images.default_image', '=', '1')
+                    ->select('products.id as product_id','products.name as product_name','product_images.id as product_images_id','product_images.image as product_image','product_images.default_image as product_default_images','orders.id as order_id','orders.quantity as order_quantity','orders.total_price as order_price','orders.status as order_status','orders.created_at as order_created_at')
+                    ->offset($var['count'])
+                    ->limit(2)
+                    ->get();
+
+            $html="";
+            foreach($get_user_order as $key =>$value)
+	     		{
+	     			$p_id = Crypt::encrypt($value->product_id);
+	     			$pName = str_slug($value->product_name);
+
+	            	$html.='<div class="dt-ord-top clears"><div class="dt-ord-top-left"><span>Order ID: #'.$value->order_id.'</span></div></div>';
+	                $html.='<div class="prod-order-status"><div class="row"><div class="col-lg-2"><prod><img src="'.url('/images/productImage').'/'.$value->product_image.'"></prod></div><div class="col-lg-7"><div class="order-issue"><h3><a href="'.url('/product-details').'/'.$pName.'/'.$p_id.'" target="_blank">'.$value->product_name.'</a></h3><div><span>Quantity: </span><span>'.$value->order_quantity.'</span></div><div><span>Total Price: </span><span>$ '.$value->order_price.'</span></div></div></div></div></div>';
+	                $html.='<div class="track-holder"><div class="deliver-sec clears"><div class="deliver-sec-left"><span>Order Status: </span>';
+
+	    			if($value->order_status==0){
+	                    $html.='<span>PENDING</span>';
+	    			}
+	                elseif($value->order_status==1){
+	                    $html.='<span>PROCESSING</span>';
+	                }
+	                elseif($value->order_status==2){
+	                    $html.='<span>DISPATCHED</span>';
+	                }
+	                elseif($value->order_status==3){
+	                    $html.='<span>DELIVERED</span>';
+	                }
+	                elseif($value->order_status==4){
+	                    $html.='<span>REQUEST FOR REFUND</span>';
+	                }
+	                elseif($value->order_status==5){
+	                    $html.='<span>PRODUCT PICKED UP</span>';
+	                }
+	                elseif($value->order_status==6){
+	                    $html.='<span>REFUNDED</span>';
+	                }
+	                elseif($value->order_status==7){
+	                    $html.='<span>REQUEST FOR REPLACEMENT</span>';
+	                }
+	                elseif($value->order_status==8){
+	                    $html.='<span>PRODUCT REPLACED</span>';
+	                }
+
+	                $html.='</div><div class="deliver-sec-right">';
+	                $html.='<span>Placed On:&nbsp</span>';
+	                $converted_date=date('D,M jS Y',strtotime($value->order_created_at));
+	                $html.='<small>'.$converted_date.'</small></div></div></div>';
+	            }
+	            return $html;
+        }
      
 }

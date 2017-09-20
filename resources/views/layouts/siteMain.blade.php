@@ -19,9 +19,6 @@
 {!!HTML::style('css/site/bootstrap.css')!!}
 {!!HTML::style('css/site/style.css')!!}
 {!!HTML::style('css/site/responsive.css')!!}
-
-<!--<link href="source/jquery.fancybox.css" rel="stylesheet" type="text/css" /> -->
-
 {!!HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')!!}
 {!!HTML::script('js/site/slick.js')!!}
 <script>
@@ -32,60 +29,54 @@
 <script>
     $(document).ready(function(){
              
-$('.n-prod-slide').slick({
-  dots: false,
-  infinite: true,
-  speed:800,
-  autoplay:true,    
-  slidesToShow: 4,
-  slidesToScroll: 1,
-  responsive: [
-    {
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: 3,
-        slidesToScroll: 3,
+      $('.n-prod-slide').slick({
+        dots: false,
         infinite: true,
-        dots: false
-      }
-    },
-    {
-      breakpoint: 600,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 1
-      }
-    },
-    {
-      breakpoint: 480,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1
-      }
-    }
-    // You can unslick at a given breakpoint now by adding:
-    // settings: "unslick"
-    // instead of a settings object
-  ]
-});         
-         
-        
-    })
-</script> 
+        speed:800,
+        autoplay:true,    
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+              infinite: true,
+              dots: false
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 1
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1
+            }
+          }
+          // You can unslick at a given breakpoint now by adding:
+          // settings: "unslick"
+          // instead of a settings object
+        ]
+      });
+});
+</script>
 <title>{{config('global.siteTitle')}}</title>
 </head>
 <body>
 <div class="total-content" id="main" style="display:block">   
-<span class="open-btn" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; </span> 
-<div class="body-content">
-
-  @include('include.frontHeader')
-
-  @yield('content')
-
+  <span class="open-btn" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; </span> 
+  <div class="body-content">
+    @include('include.frontHeader')
+    @yield('content')
   </div>
-   @include('include.frontFooter')
-
+     @include('include.frontFooter')
 </div>
 
 <script type="text/javascript">
@@ -101,8 +92,6 @@ $('.n-prod-slide').slick({
 
 {!!HTML::script('js/site/siteScript.js')!!}
 {!!HTML::script('js/site/siteCustom.js')!!}
-<!--<script src="js/cloud-zoom.js"></script>-->
-<!--<script src="source/jquery.fancybox.js"></script> -->
 </body>
 </html>
 
